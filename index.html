@@ -3,61 +3,702 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OILFIX OFFICIAL</title>
-  <link rel="stylesheet" href="style.css">
+  <title>TAESAN | 태산 조직 인트라넷 & 서비스</title>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Pretendard:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-black: #060608;
+      --bg-card: #0f1015;
+      --bg-card-hover: #161821;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      
+      /* Syndicate Theme Colors */
+      --crimson: #dc2626;
+      --crimson-glow: rgba(220, 38, 38, 0.35);
+      --gold: #d97706;
+      --gold-glow: rgba(217, 119, 6, 0.3);
+      --cyan: #0284c7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: var(--text-main);
+      font-family: 'Pretendard', sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Background Effect */
+    .ambient-grid {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 50px 50px;
+      pointer-events: none;
+      z-index: -2;
+    }
+
+    .ambient-glow {
+      position: fixed;
+      top: -10%; left: 50%;
+      transform: translateX(-50%);
+      width: 800px; height: 400px;
+      background: radial-gradient(circle, var(--crimson-glow) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: -1;
+      filter: blur(80px);
+    }
+
+    /* Header & Nav */
+    header {
+      position: fixed;
+      top: 0; left: 0; width: 100%;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 50px;
+      background: rgba(6, 6, 8, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #fff;
+      text-decoration: none;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .logo span { color: var(--crimson); }
+
+    nav {
+      display: flex; gap: 30px; align-items: center;
+    }
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: 0.3s;
+      letter-spacing: 1px;
+    }
+    nav a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+    .btn-intranet {
+      background: linear-gradient(135deg, var(--crimson), #991b1b);
+      color: #fff;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      box-shadow: 0 0 15px var(--crimson-glow);
+      transition: 0.3s;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .btn-intranet:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 25px var(--crimson-glow);
+    }
+
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      text-align: center;
+      padding: 120px 20px 60px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(220, 38, 38, 0.1);
+      border: 1px solid var(--crimson);
+      color: var(--crimson);
+      padding: 6px 16px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      margin-bottom: 25px;
+      border-radius: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 4rem;
+      font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .hero h1 span { color: var(--crimson); }
+
+    .hero p {
+      max-width: 650px;
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      margin-bottom: 40px;
+    }
+
+    /* Ticker Marquee */
+    .marquee-container {
+      width: 100%;
+      background: rgba(220, 38, 38, 0.05);
+      border-y: 1px solid rgba(220, 38, 38, 0.2);
+      padding: 12px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      margin-bottom: 80px;
+    }
+    .marquee-content {
+      display: inline-block;
+      animation: marquee 25s linear infinite;
+    }
+    .marquee-item {
+      display: inline-block;
+      margin: 0 30px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+    .marquee-item i { color: var(--gold); margin-right: 8px; }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Section Base */
+    section {
+      max-width: 1200px;
+      margin: 0 auto 120px;
+      padding: 0 20px;
+    }
+
+    .section-header {
+      margin-bottom: 50px;
+    }
+    .section-subtitle {
+      color: var(--crimson);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      font-weight: 700;
+    }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-top: 5px;
+    }
+
+    /* Cards Grid */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 35px;
+      transition: 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(220, 38, 38, 0.4);
+      transform: translateY(-5px);
+    }
+    .card-icon {
+      font-size: 2.2rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .card h3 {
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+    }
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Price Table */
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .price-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 30px;
+      border-radius: 8px;
+      text-align: center;
+      position: relative;
+    }
+    .price-card.featured {
+      border-color: var(--gold);
+      box-shadow: 0 0 20px var(--gold-glow);
+    }
+    .price-card h4 {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      margin-bottom: 15px;
+    }
+    .price-amount {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .price-amount span { font-size: 1rem; color: var(--gold); }
+
+    /* Modal / Terminal Windows */
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: none; justify-content: center; align-items: center;
+      z-index: 1000;
+    }
+    .modal-backdrop.active { display: flex; }
+
+    .modal-content {
+      background: #0d0e12;
+      border: 1px solid var(--border-color);
+      width: 100%; max-width: 650px;
+      border-radius: 10px;
+      padding: 35px;
+      position: relative;
+      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: none; border: none;
+      color: var(--text-muted); font-size: 1.3rem;
+      cursor: pointer;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .form-control {
+      width: 100%;
+      background: #15171e;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 12px 15px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+    .form-control:focus {
+      outline: none;
+      border-color: var(--crimson);
+    }
+    select.form-control option {
+      background: #15171e;
+      color: #fff;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--crimson);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      font-weight: 700;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+    .btn-submit:hover {
+      background: #b91c1c;
+    }
+
+    /* Dashboard (Logged In) */
+    .dashboard-panel {
+      display: none;
+    }
+    .dashboard-panel.active {
+      display: block;
+    }
+
+    .tab-buttons {
+      display: flex; gap: 10px;
+      margin-bottom: 25px;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+    .tab-btn {
+      background: none; border: none;
+      color: var(--text-muted);
+      padding: 8px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    .tab-btn.active {
+      background: rgba(220, 38, 38, 0.2);
+      color: var(--crimson);
+    }
+
+    footer {
+      border-top: 1px solid var(--border-color);
+      padding: 40px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
 </head>
 <body>
+
+  <div class="ambient-grid"></div>
+  <div class="ambient-glow"></div>
+
+  <!-- Header -->
   <header>
-    <a href="#home"><img src="assets/logo.svg" alt="OILFIX"></a>
+    <a href="#" class="logo">
+      <i class="fa-solid fa-mountain"></i> TAESAN <span>태산</span>
+    </a>
     <nav>
-      <a href="#about">ABOUT</a>
-      <a href="#services">SERVICE</a>
-      <a href="#price">PRICE</a>
-      <a href="#team">TEAM</a>
-      <a href="#recruit">RECRUIT</a>
+      <a href="#about">조직소개</a>
+      <a href="#business">사업 영역</a>
+      <a href="#price">거래 단가표</a>
+      <button class="btn-intranet" onclick="openModal('intranetModal')">
+        <i class="fa-solid fa-lock"></i> 조직원 인트라넷
+      </button>
     </nav>
   </header>
 
-  <main>
-    <section id="hero">
-      <h1>FILL IT. FIX IT. OWN THE ROAD.</h1>
-      <p>자동차 서비스 팀 OILFIX</p>
-    </section>
+  <!-- Hero -->
+  <div class="hero">
+    <span class="hero-tag">TAESAN SYNDICATE OFFICIAL</span>
+    <h1>BEYOND THE SHADOWS<br><span>TAESAN</span></h1>
+    <p>태산(TAESAN)은 음지 시장의 질서를 주도하고 막강한 자금력과 자산을 운용하는 최고급 특수 조직입니다.</p>
+  </div>
 
-    <!-- 추가 섹션들... -->
-  </main>
+  <!-- Marquee Ticker -->
+  <div class="marquee-container">
+    <div class="marquee-content">
+      <div class="marquee-item"><i class="fa-solid fa-shield-halved"></i> 하트캔디 / 러쉬캔디 수량 상시 확보 중</div>
+      <div class="marquee-item"><i class="fa-solid fa-coins"></i> 검은돈 100% 안전 고율 환전 프로세스 가동</div>
+      <div class="marquee-item"><i class="fa-solid fa-triangle-exclamation"></i> 타 팩션 간 비인가 거래 및 교전 철저 제재</div>
+      <div class="marquee-item"><i class="fa-solid fa-shield-halved"></i> 하트캔디 / 러쉬캔디 수량 상시 확보 중</div>
+      <div class="marquee-item"><i class="fa-solid fa-coins"></i> 검은돈 100% 안전 고율 환전 프로세스 가동</div>
+    </div>
+  </div>
 
-  <script src="script.js"></script>
-</body>
-</html><!DOCTYPE html>
-<html lang="ko">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TAESAN OFFICIAL</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <a href="#home"><img src="assets/logo.svg" alt="OILFIX"></a>
-    <nav>
-      <a href="#about">ABOUT</a>
-      <a href="#services">SERVICE</a>
-      <a href="#price">PRICE</a>
-      <a href="#team">TEAM</a>
-      <a href="#recruit">RECRUIT</a>
-    </nav>
-  </header>
+  <!-- About -->
+  <section id="about">
+    <div class="section-header">
+      <p class="section-subtitle">01 / ABOUT US</p>
+      <h2 class="section-title">조직 태산(TAESAN)</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-vault"></i></div>
+        <h3>압도적 자금력</h3>
+        <p>검은돈 환전 및 특수물품 유통을 통해 독보적인 자금을 운용하며 조직의 세력을 확장합니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-handshake-simple"></i></div>
+        <h3>신뢰 기반 거래</h3>
+        <p>철저한 비밀 유지와 정확한 수량 및 단가 준수로 타 세력과의 신용을 최우선으로 합니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-gun"></i></div>
+        <h3>강력한 무력 응징</h3>
+        <p>규율 위반자나 도발 세력에 대해서는 거침없는 무력 행사를 통해 세력권을 보호합니다.</p>
+      </div>
+    </div>
+  </section>
 
-  <main>
-    <section id="hero">
-      <h1>1.</h1>
-      <p>강력한 조직 TAESAN</p>
-    </section>
+  <!-- Business -->
+  <section id="business">
+    <div class="section-header">
+      <p class="section-subtitle">02 / CORE BUSINESS</p>
+      <h2 class="section-title">핵심 사업 영역</h2>
+    </div>
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
+        <h3>검은돈 환전 사업</h3>
+        <p>획득한 검은돈을 안전한 정식 자금으로 고율 세탁 및 환전해 드립니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-heart-pulse"></i></div>
+        <h3>하트캔디 공급</h3>
+        <p>특수 효과를 지닌 하트캔디를 단골 고객 및 거래처에 안정적으로 유통합니다.</p>
+      </div>
+      <div class="card">
+        <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
+        <h3>러쉬캔디 판매</h3>
+        <p>신속한 행동력과 능력을 극대화해 주는 러쉬캔디를 정가에 독점 공급합니다.</p>
+      </div>
+    </div>
+  </section>
 
-    <!-- 추가 섹션들... -->
-  </main>
+  <!-- Price Board -->
+  <section id="price">
+    <div class="section-header">
+      <p class="section-subtitle">03 / PRICE BOARD</p>
+      <h2 class="section-title">품목별 단가표</h2>
+    </div>
+    <div class="price-grid">
+      <div class="price-card featured">
+        <h4>검은돈 환전 비율</h4>
+        <div class="price-amount">80% <span>선환전</span></div>
+        <p>1억 당 8,000만원 지급 (비밀 보장)</p>
+      </div>
+      <div class="price-card">
+        <h4>하트캔디 (개당)</h4>
+        <div class="price-amount">500 <span>만원</span></div>
+        <p>대량 구매 시 추가 서비스 제공</p>
+      </div>
+      <div class="price-card">
+        <h4>러쉬캔디 (개당)</h4>
+        <div class="price-amount">700 <span>만원</span></div>
+        <p>재고 문의 필수 (상시 변동)</p>
+      </div>
+    </div>
+  </section>
 
-  <script src="script.js"></script>
+  <!-- Footer -->
+  <footer>
+    <p>© 2026 TAESAN SYNDICATE. All rights reserved.</p>
+  </footer>
+
+  <!-- Intranet / Member Login & Reporting Modal -->
+  <div class="modal-backdrop" id="intranetModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('intranetModal')"><i class="fa-solid fa-xmark"></i></button>
+      
+      <!-- Auth Screen -->
+      <div id="loginAuthScreen">
+        <h2 style="margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> 조직원 인트라넷 인증</h2>
+        <p style="color: var(--text-muted); font-size:0.9rem; margin-bottom: 25px;">인가된 태산 조직원만 접근할 수 있는 내부 보고 시스템입니다.</p>
+        
+        <form onsubmit="handleLogin(event)">
+          <div class="form-group">
+            <label>조직원 식별 코드 / 닉네임</label>
+            <input type="text" id="memberAuthId" class="form-control" placeholder="예: #1004 홍길동" required>
+          </div>
+          <div class="form-group">
+            <label>보안 암호 (PIN)</label>
+            <input type="password" id="memberAuthPin" class="form-control" placeholder="****" required>
+          </div>
+          <button type="submit" class="btn-submit">인증 및 인트라넷 접속</button>
+        </form>
+      </div>
+
+      <!-- Dashboard Screen (After Auth) -->
+      <div id="dashboardScreen" class="dashboard-panel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+          <h2><i class="fa-solid fa-file-signature"></i> 태산 인트라넷 보고서</h2>
+          <button onclick="handleLogout()" style="background:none; border:1px solid var(--border-color); color:#fff; padding:5px 12px; border-radius:4px; cursor:pointer;">로그아웃</button>
+        </div>
+
+        <div class="tab-buttons">
+          <button class="tab-btn active" id="btnTabRp" onclick="switchReportTab('RP')">RP 보고서 작성</button>
+          <button class="tab-btn" id="btnTabTrade" onclick="switchReportTab('TRADE')">거래 보고서 작성</button>
+        </div>
+
+        <!-- RP Report Form -->
+        <form id="rpReportForm" onsubmit="submitReport(event, 'RP')">
+          <div class="form-group">
+            <label>RP 종류</label>
+            <select class="form-control" id="rpCategory" required>
+              <option value="세력분쟁/협상">세력 분쟁 및 협상</option>
+              <option value="암거래/환전">암거래 / 환전</option>
+              <option value="단속/긴급대응">경찰 단속 / 긴급 대응</option>
+              <option value="내부회의">조직 내부 회의</option>
+              <option value="기타">기타</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>상대 팩션</label>
+            <select class="form-control" id="targetFaction" required>
+              <option value="블러드">블러드</option>
+              <option value="흑룡회">흑룡회</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>RP 결과</label>
+            <select class="form-control" id="rpResult" required>
+              <option value="승리/성공">승리 / 성공</option>
+              <option value="타협/협상완료">타협 / 협상 완료</option>
+              <option value="손실/후퇴">손실 / 작전상 후퇴</option>
+              <option value="진행중">진행 중</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>상세 경과 및 보고 내용 (선택 항목)</label>
+            <textarea class="form-control" id="rpDetails" rows="4" placeholder="상세보고 내용을 입력하세요 (선택)"></textarea>
+          </div>
+          <button type="submit" class="btn-submit">RP 보고서 제출</button>
+        </form>
+
+        <!-- Trade Report Form -->
+        <form id="tradeReportForm" onsubmit="submitReport(event, 'TRADE')" style="display:none;">
+          <div class="form-group">
+            <label>상대 고유번호 (#)</label>
+            <input type="text" class="form-control" id="tradeTargetTag" placeholder="예: #1234" required>
+          </div>
+          <div class="form-group">
+            <label>상대 닉네임</label>
+            <input type="text" class="form-control" id="tradeTargetName" placeholder="예: 홍길동" required>
+          </div>
+          <div class="form-group">
+            <label>물품명</label>
+            <select class="form-control" id="tradeItem" required>
+              <option value="검은돈 환전">검은돈 환전</option>
+              <option value="하트캔디">하트캔디</option>
+              <option value="러쉬캔디">러쉬캔디</option>
+              <option value="기타">기타 타격물품</option>
+            </select>
+          </div>
+          <div style="display:flex; gap:15px;">
+            <div class="form-group" style="flex:1;">
+              <label>수량</label>
+              <input type="number" class="form-control" id="tradeQuantity" placeholder="0" required>
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label>총 금액 (만원 단위)</label>
+              <input type="number" class="form-control" id="tradeAmount" placeholder="0" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>비고 (거래 장소 등)</label>
+            <input type="text" class="form-control" id="tradeNotes" placeholder="비고 사항 입력">
+          </div>
+          <button type="submit" class="btn-submit">거래 보고서 제출</button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // 🔗 구글 앱스 스크립트(Google Apps Script) 배포 URL 주소를 넣으시면 스프레드시트로 자동 전송됩니다.
+    const GOOGLE_SHEET_API_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+
+    let currentMember = null;
+
+    function openModal(id) {
+      document.getElementById(id).classList.add('active');
+    }
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const memberId = document.getElementById('memberAuthId').value;
+      currentMember = memberId;
+
+      document.getElementById('loginAuthScreen').style.display = 'none';
+      document.getElementById('dashboardScreen').classList.add('active');
+    }
+
+    function handleLogout() {
+      currentMember = null;
+      document.getElementById('loginAuthScreen').style.display = 'block';
+      document.getElementById('dashboardScreen').classList.remove('active');
+    }
+
+    function switchReportTab(type) {
+      if(type === 'RP') {
+        document.getElementById('btnTabRp').classList.add('active');
+        document.getElementById('btnTabTrade').classList.remove('active');
+        document.getElementById('rpReportForm').style.display = 'block';
+        document.getElementById('tradeReportForm').style.display = 'none';
+      } else {
+        document.getElementById('btnTabRp').classList.remove('active');
+        document.getElementById('btnTabTrade').classList.add('active');
+        document.getElementById('rpReportForm').style.display = 'none';
+        document.getElementById('tradeReportForm').style.display = 'block';
+      }
+    }
+
+    function submitReport(e, type) {
+      e.preventDefault();
+      
+      let payload = {
+        reportType: type,
+        author: currentMember || '미인증 조직원'
+      };
+
+      if(type === 'RP') {
+        payload.rpCategory = document.getElementById('rpCategory').value;
+        payload.targetFaction = document.getElementById('targetFaction').value;
+        payload.rpResult = document.getElementById('rpResult').value;
+        payload.details = document.getElementById('rpDetails').value;
+      } else {
+        payload.targetTag = document.getElementById('tradeTargetTag').value;
+        payload.targetName = document.getElementById('tradeTargetName').value;
+        payload.item = document.getElementById('tradeItem').value;
+        payload.quantity = document.getElementById('tradeQuantity').value;
+        payload.amount = document.getElementById('tradeAmount').value;
+        payload.notes = document.getElementById('tradeNotes').value;
+      }
+
+      // Google Sheet 전송
+      if (GOOGLE_SHEET_API_URL && GOOGLE_SHEET_API_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
+        fetch(GOOGLE_SHEET_API_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(() => {
+          alert('보고서가 구글 스프레드시트로 정상 전송되었습니다.');
+          e.target.reset();
+        }).catch(err => {
+          console.error(err);
+          alert('전송 중 오류가 발생했습니다.');
+        });
+      } else {
+        alert('보고서가 등록되었습니다. (스프레드시트 URL을 설정하시면 실시간 자동 기록됩니다)');
+        e.target.reset();
+      }
+    }
+  </script>
 </body>
 </html>
