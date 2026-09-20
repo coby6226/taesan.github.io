@@ -1,704 +1,924 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" class="scroll-smooth dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TAESAN | 태산 조직 인트라넷 & 서비스</title>
-  
-  <!-- Fonts & Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Pretendard:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAESAN SYNDICATE | 태산 (陰地支配)</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Serif+KR:wght@600;900&family=Orbitron:wght@500;700;900&family=Pretendard:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        syndicate: {
+                            black: '#0a0a0c',
+                            void: '#121318',
+                            card: 'rgba(18, 19, 24, 0.85)',
+                            gold: '#ffaa00',
+                            goldBright: '#ffd000',
+                            crimson: '#ff3366',
+                            blood: '#e60039',
+                            cyan: '#00f2fe',
+                            muted: '#6B7280'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                        serifKR: ['Noto Serif KR', 'serif'],
+                        pretendard: ['Pretendard', 'sans-serif'],
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'marquee': 'marquee 25s linear infinite'
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-50%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
 
-  <style>
-    :root {
-      --bg-black: #060608;
-      --bg-card: #0f1015;
-      --bg-card-hover: #161821;
-      --border-color: rgba(255, 255, 255, 0.08);
-      --text-main: #f1f5f9;
-      --text-muted: #94a3b8;
-      
-      /* Syndicate Theme Colors */
-      --crimson: #dc2626;
-      --crimson-glow: rgba(220, 38, 38, 0.35);
-      --gold: #d97706;
-      --gold-glow: rgba(217, 119, 6, 0.3);
-      --cyan: #0284c7;
-    }
+    <style>
+        body {
+            background-color: #0a0a0c;
+            color: #E5E7EB;
+            font-family: 'Pretendard', sans-serif;
+            overflow-x: hidden;
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      scroll-behavior: smooth;
-    }
+        .gold-border-glow {
+            box-shadow: 0 0 15px rgba(255, 170, 0, 0.25), inset 0 0 15px rgba(255, 170, 0, 0.1);
+        }
 
-    body {
-      background-color: var(--bg-black);
-      color: var(--text-main);
-      font-family: 'Pretendard', sans-serif;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
+        .crimson-glow {
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
+        }
 
-    /* Ambient Background Effect */
-    .ambient-grid {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      background-size: 50px 50px;
-      pointer-events: none;
-      z-index: -2;
-    }
+        .gold-text-shimmer {
+            background: linear-gradient(135deg, #FFF 0%, #ffaa00 50%, #996600 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
 
-    .ambient-glow {
-      position: fixed;
-      top: -10%; left: 50%;
-      transform: translateX(-50%);
-      width: 800px; height: 400px;
-      background: radial-gradient(circle, var(--crimson-glow) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: -1;
-      filter: blur(80px);
-    }
+        .syndicate-grid {
+            background-image: linear-gradient(to right, rgba(255, 170, 0, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 51, 102, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
 
-    /* Header & Nav */
-    header {
-      position: fixed;
-      top: 0; left: 0; width: 100%;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 20px 50px;
-      background: rgba(6, 6, 8, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-color);
-      z-index: 100;
-    }
+        .scanlines {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
+            background-size: 100% 4px;
+            z-index: 40;
+            opacity: 0.5;
+        }
 
-    .logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 900;
-      letter-spacing: 2px;
-      color: #fff;
-      text-decoration: none;
-      display: flex; align-items: center; gap: 10px;
-    }
-    .logo span { color: var(--crimson); }
+        .glass-syndicate {
+            background: rgba(18, 19, 24, 0.90);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 170, 0, 0.18);
+        }
 
-    nav {
-      display: flex; gap: 30px; align-items: center;
-    }
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: 0.3s;
-      letter-spacing: 1px;
-    }
-    nav a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .card-syndicate {
+            background: rgba(22, 24, 31, 0.80);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-    .btn-intranet {
-      background: linear-gradient(135deg, var(--crimson), #991b1b);
-      color: #fff;
-      border: none;
-      padding: 10px 22px;
-      border-radius: 4px;
-      font-weight: 700;
-      font-size: 0.9rem;
-      cursor: pointer;
-      box-shadow: 0 0 15px var(--crimson-glow);
-      transition: 0.3s;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .btn-intranet:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 25px var(--crimson-glow);
-    }
+        .card-syndicate:hover {
+            border-color: rgba(255, 170, 0, 0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -10px rgba(255, 170, 0, 0.2);
+        }
 
-    /* Hero Section */
-    .hero {
-      min-height: 100vh;
-      display: flex; flex-direction: column; justify-content: center; align-items: center;
-      text-align: center;
-      padding: 120px 20px 60px;
-    }
-
-    .hero-tag {
-      display: inline-block;
-      background: rgba(220, 38, 38, 0.1);
-      border: 1px solid var(--crimson);
-      color: var(--crimson);
-      padding: 6px 16px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 3px;
-      margin-bottom: 25px;
-      border-radius: 20px;
-    }
-
-    .hero h1 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 4rem;
-      font-weight: 900;
-      line-height: 1.1;
-      margin-bottom: 20px;
-      text-transform: uppercase;
-    }
-    .hero h1 span { color: var(--crimson); }
-
-    .hero p {
-      max-width: 650px;
-      color: var(--text-muted);
-      font-size: 1.15rem;
-      margin-bottom: 40px;
-    }
-
-    /* Ticker Marquee */
-    .marquee-container {
-      width: 100%;
-      background: rgba(220, 38, 38, 0.05);
-      border-y: 1px solid rgba(220, 38, 38, 0.2);
-      padding: 12px 0;
-      overflow: hidden;
-      white-space: nowrap;
-      margin-bottom: 80px;
-    }
-    .marquee-content {
-      display: inline-block;
-      animation: marquee 25s linear infinite;
-    }
-    .marquee-item {
-      display: inline-block;
-      margin: 0 30px;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
-    .marquee-item i { color: var(--gold); margin-right: 8px; }
-    @keyframes marquee {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* Section Base */
-    section {
-      max-width: 1200px;
-      margin: 0 auto 120px;
-      padding: 0 20px;
-    }
-
-    .section-header {
-      margin-bottom: 50px;
-    }
-    .section-subtitle {
-      color: var(--crimson);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      font-weight: 700;
-    }
-    .section-title {
-      font-size: 2.2rem;
-      font-weight: 800;
-      margin-top: 5px;
-    }
-
-    /* Cards Grid */
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 25px;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      padding: 35px;
-      transition: 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-    .card:hover {
-      background: var(--bg-card-hover);
-      border-color: rgba(220, 38, 38, 0.4);
-      transform: translateY(-5px);
-    }
-    .card-icon {
-      font-size: 2.2rem;
-      color: var(--gold);
-      margin-bottom: 20px;
-    }
-    .card h3 {
-      font-size: 1.4rem;
-      margin-bottom: 12px;
-    }
-    .card p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    /* Price Table */
-    .price-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-    }
-    .price-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      padding: 30px;
-      border-radius: 8px;
-      text-align: center;
-      position: relative;
-    }
-    .price-card.featured {
-      border-color: var(--gold);
-      box-shadow: 0 0 20px var(--gold-glow);
-    }
-    .price-card h4 {
-      font-size: 1.2rem;
-      color: var(--text-muted);
-      margin-bottom: 15px;
-    }
-    .price-amount {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 900;
-      color: #fff;
-      margin-bottom: 10px;
-    }
-    .price-amount span { font-size: 1rem; color: var(--gold); }
-
-    /* Modal / Terminal Windows */
-    .modal-backdrop {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(8px);
-      display: none; justify-content: center; align-items: center;
-      z-index: 1000;
-    }
-    .modal-backdrop.active { display: flex; }
-
-    .modal-content {
-      background: #0d0e12;
-      border: 1px solid var(--border-color);
-      width: 100%; max-width: 650px;
-      border-radius: 10px;
-      padding: 35px;
-      position: relative;
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.8);
-      max-height: 90vh;
-      overflow-y: auto;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 20px; right: 20px;
-      background: none; border: none;
-      color: var(--text-muted); font-size: 1.3rem;
-      cursor: pointer;
-    }
-
-    /* Forms */
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-group label {
-      display: block;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 8px;
-      font-weight: 600;
-    }
-    .form-control {
-      width: 100%;
-      background: #15171e;
-      border: 1px solid var(--border-color);
-      color: #fff;
-      padding: 12px 15px;
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 0.95rem;
-    }
-    .form-control:focus {
-      outline: none;
-      border-color: var(--crimson);
-    }
-    select.form-control option {
-      background: #15171e;
-      color: #fff;
-    }
-
-    .btn-submit {
-      width: 100%;
-      background: var(--crimson);
-      color: #fff;
-      border: none;
-      padding: 14px;
-      font-weight: 700;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: 0.3s;
-    }
-    .btn-submit:hover {
-      background: #b91c1c;
-    }
-
-    /* Dashboard (Logged In) */
-    .dashboard-panel {
-      display: none;
-    }
-    .dashboard-panel.active {
-      display: block;
-    }
-
-    .tab-buttons {
-      display: flex; gap: 10px;
-      margin-bottom: 25px;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 10px;
-    }
-    .tab-btn {
-      background: none; border: none;
-      color: var(--text-muted);
-      padding: 8px 16px;
-      font-weight: 700;
-      cursor: pointer;
-      border-radius: 4px;
-    }
-    .tab-btn.active {
-      background: rgba(220, 38, 38, 0.2);
-      color: var(--crimson);
-    }
-
-    footer {
-      border-top: 1px solid var(--border-color);
-      padding: 40px 20px;
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-    }
-  </style>
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0a0a0c; }
+        ::-webkit-scrollbar-thumb { background: #332200; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ffaa00; }
+    </style>
 </head>
-<body>
+<body class="syndicate-grid selection:bg-syndicate-crimson selection:text-white">
 
-  <div class="ambient-grid"></div>
-  <div class="ambient-glow"></div>
+    <div class="scanlines"></div>
 
-  <!-- Header -->
-  <header>
-    <a href="#" class="logo">
-      <i class="fa-solid fa-mountain"></i> TAESAN <span>태산</span>
-    </a>
-    <nav>
-      <a href="#about">조직소개</a>
-      <a href="#business">사업 영역</a>
-      <a href="#price">거래 단가표</a>
-      <button class="btn-intranet" onclick="openModal('intranetModal')">
-        <i class="fa-solid fa-lock"></i> 조직원 인트라넷
-      </button>
-    </nav>
-  </header>
+    <header class="fixed top-0 left-0 right-0 z-50 glass-syndicate border-b border-syndicate-gold/20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <a href="#" class="flex items-center space-x-3 group">
+                <div class="w-11 h-11 bg-gradient-to-br from-syndicate-gold via-black to-syndicate-crimson border border-syndicate-gold/60 flex items-center justify-center font-serifKR font-black text-white text-2xl gold-border-glow group-hover:scale-105 transition-transform">
+                    太
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-cinzel font-black text-2xl tracking-widest text-white group-hover:text-syndicate-gold transition-colors">TAESAN</span>
+                    <span class="text-[10px] font-mono tracking-widest text-syndicate-gold/80 uppercase -mt-1">태산 파벌 SYNDICATE</span>
+                </div>
+            </a>
 
-  <!-- Hero -->
-  <div class="hero">
-    <span class="hero-tag">TAESAN SYNDICATE OFFICIAL</span>
-    <h1>BEYOND THE SHADOWS<br><span>TAESAN</span></h1>
-    <p>태산(TAESAN)은 음지 시장의 질서를 주도하고 막강한 자금력과 자산을 운용하는 최고급 특수 조직입니다.</p>
-  </div>
+            <!-- Desktop Nav Links -->
+            <nav class="hidden lg:flex items-center space-x-8 font-mono text-xs tracking-widest uppercase">
+                <a href="#about" class="text-gray-300 hover:text-syndicate-gold transition-colors">ABOUT</a>
+                <a href="#business" class="text-gray-300 hover:text-syndicate-gold transition-colors">사업권</a>
+                <a href="#exchange" class="text-gray-300 hover:text-syndicate-gold transition-colors">환전&시세</a>
+                <a href="#crew" class="text-gray-300 hover:text-syndicate-gold transition-colors">조직도</a>
+                <a href="#rules" class="text-gray-300 hover:text-syndicate-gold transition-colors">수칙</a>
+            </nav>
 
-  <!-- Marquee Ticker -->
-  <div class="marquee-container">
-    <div class="marquee-content">
-      <div class="marquee-item"><i class="fa-solid fa-shield-halved"></i> 하트캔디 / 러쉬캔디 수량 상시 확보 중</div>
-      <div class="marquee-item"><i class="fa-solid fa-coins"></i> 검은돈 100% 안전 고율 환전 프로세스 가동</div>
-      <div class="marquee-item"><i class="fa-solid fa-triangle-exclamation"></i> 타 팩션 간 비인가 거래 및 교전 철저 제재</div>
-      <div class="marquee-item"><i class="fa-solid fa-shield-halved"></i> 하트캔디 / 러쉬캔디 수량 상시 확보 중</div>
-      <div class="marquee-item"><i class="fa-solid fa-coins"></i> 검은돈 100% 안전 고율 환전 프로세스 가동</div>
-    </div>
-  </div>
+            <!-- Action Buttons & Login Portal Toggle -->
+            <div class="flex items-center space-x-3">
+                <button onclick="toggleAudio()" id="bgmBtn" class="p-2.5 bg-black/60 border border-white/10 text-gray-400 hover:text-syndicate-gold transition-colors text-xs font-mono flex items-center gap-1.5" title="BGM Toggle">
+                    <i class="fa-solid fa-volume-xmark" id="bgmIcon"></i>
+                    <span class="hidden sm:inline text-[10px]">BGM</span>
+                </button>
+                
+                <button onclick="openModal('recruit')" class="hidden sm:inline-flex items-center px-4 py-2 bg-gradient-to-r from-syndicate-crimson to-black border border-syndicate-blood text-white font-orbitron font-bold text-xs uppercase hover:brightness-125 transition-all shadow-lg shadow-syndicate-crimson/20">
+                    <i class="fa-solid fa-user-shield mr-2 text-syndicate-gold"></i> 입단 지원
+                </button>
 
-  <!-- About -->
-  <section id="about">
-    <div class="section-header">
-      <p class="section-subtitle">01 / ABOUT US</p>
-      <h2 class="section-title">조직 태산(TAESAN)</h2>
-    </div>
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-icon"><i class="fa-solid fa-vault"></i></div>
-        <h3>압도적 자금력</h3>
-        <p>검은돈 환전 및 특수물품 유통을 통해 독보적인 자금을 운용하며 조직의 세력을 확장합니다.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fa-solid fa-handshake-simple"></i></div>
-        <h3>신뢰 기반 거래</h3>
-        <p>철저한 비밀 유지와 정확한 수량 및 단가 준수로 타 세력과의 신용을 최우선으로 합니다.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fa-solid fa-gun"></i></div>
-        <h3>강력한 무력 응징</h3>
-        <p>규율 위반자나 도발 세력에 대해서는 거침없는 무력 행사를 통해 세력권을 보호합니다.</p>
-      </div>
-    </div>
-  </section>
+                <button onclick="openAuthModal()" class="inline-flex items-center px-4 py-2 bg-syndicate-gold text-black font-orbitron font-extrabold text-xs uppercase hover:bg-syndicate-goldBright transition-all shadow-lg shadow-syndicate-gold/20">
+                    <i class="fa-solid fa-key mr-2"></i> 조직원 인증
+                </button>
 
-  <!-- Business -->
-  <section id="business">
-    <div class="section-header">
-      <p class="section-subtitle">02 / CORE BUSINESS</p>
-      <h2 class="section-title">핵심 사업 영역</h2>
-    </div>
-    <div class="grid-3">
-      <div class="card">
-        <div class="card-icon"><i class="fa-solid fa-money-bill-transfer"></i></div>
-        <h3>검은돈 환전 사업</h3>
-        <p>획득한 검은돈을 안전한 정식 자금으로 고율 세탁 및 환전해 드립니다.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fa-solid fa-heart-pulse"></i></div>
-        <h3>하트캔디 공급</h3>
-        <p>특수 효과를 지닌 하트캔디를 단골 고객 및 거래처에 안정적으로 유통합니다.</p>
-      </div>
-      <div class="card">
-        <div class="card-icon"><i class="fa-solid fa-bolt"></i></div>
-        <h3>러쉬캔디 판매</h3>
-        <p>신속한 행동력과 능력을 극대화해 주는 러쉬캔디를 정가에 독점 공급합니다.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Price Board -->
-  <section id="price">
-    <div class="section-header">
-      <p class="section-subtitle">03 / PRICE BOARD</p>
-      <h2 class="section-title">품목별 단가표</h2>
-    </div>
-    <div class="price-grid">
-      <div class="price-card featured">
-        <h4>검은돈 환전 비율</h4>
-        <div class="price-amount">80% <span>선환전</span></div>
-        <p>1억 당 8,000만원 지급 (비밀 보장)</p>
-      </div>
-      <div class="price-card">
-        <h4>하트캔디 (개당)</h4>
-        <div class="price-amount">500 <span>만원</span></div>
-        <p>대량 구매 시 추가 서비스 제공</p>
-      </div>
-      <div class="price-card">
-        <h4>러쉬캔디 (개당)</h4>
-        <div class="price-amount">700 <span>만원</span></div>
-        <p>재고 문의 필수 (상시 변동)</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer>
-    <p>© 2026 TAESAN SYNDICATE. All rights reserved.</p>
-  </footer>
-
-  <!-- Intranet / Member Login & Reporting Modal -->
-  <div class="modal-backdrop" id="intranetModal">
-    <div class="modal-content">
-      <button class="modal-close" onclick="closeModal('intranetModal')"><i class="fa-solid fa-xmark"></i></button>
-      
-      <!-- Auth Screen -->
-      <div id="loginAuthScreen">
-        <h2 style="margin-bottom: 10px;"><i class="fa-solid fa-user-shield"></i> 조직원 인트라넷 인증</h2>
-        <p style="color: var(--text-muted); font-size:0.9rem; margin-bottom: 25px;">인가된 태산 조직원만 접근할 수 있는 내부 보고 시스템입니다.</p>
-        
-        <form onsubmit="handleLogin(event)">
-          <div class="form-group">
-            <label>조직원 식별 코드 / 닉네임</label>
-            <input type="text" id="memberAuthId" class="form-control" placeholder="예: #1004 홍길동" required>
-          </div>
-          <div class="form-group">
-            <label>보안 암호 (PIN)</label>
-            <input type="password" id="memberAuthPin" class="form-control" placeholder="****" required>
-          </div>
-          <button type="submit" class="btn-submit">인증 및 인트라넷 접속</button>
-        </form>
-      </div>
-
-      <!-- Dashboard Screen (After Auth) -->
-      <div id="dashboardScreen" class="dashboard-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-          <h2><i class="fa-solid fa-file-signature"></i> 태산 인트라넷 보고서</h2>
-          <button onclick="handleLogout()" style="background:none; border:1px solid var(--border-color); color:#fff; padding:5px 12px; border-radius:4px; cursor:pointer;">로그아웃</button>
+                <button id="mobileBtn" class="lg:hidden text-syndicate-gold text-xl p-2">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
         </div>
 
-        <div class="tab-buttons">
-          <button class="tab-btn active" id="btnTabRp" onclick="switchReportTab('RP')">RP 보고서 작성</button>
-          <button class="tab-btn" id="btnTabTrade" onclick="switchReportTab('TRADE')">거래 보고서 작성</button>
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobileMenu" class="hidden lg:hidden border-t border-syndicate-gold/20 glass-syndicate px-6 py-6 space-y-4 font-mono text-sm">
+            <a href="#about" class="m-link block text-gray-300 hover:text-syndicate-gold">ABOUT</a>
+            <a href="#business" class="m-link block text-gray-300 hover:text-syndicate-gold">사업권 (Core Business)</a>
+            <a href="#exchange" class="m-link block text-gray-300 hover:text-syndicate-gold">환전율 & Candy 시세</a>
+            <a href="#crew" class="m-link block text-gray-300 hover:text-syndicate-gold">조직 서열 (Hierarchy)</a>
+            <a href="#rules" class="m-link block text-gray-300 hover:text-syndicate-gold">조직 수칙 & 규율</a>
+            <div class="pt-2 grid grid-cols-2 gap-2">
+                <button onclick="openModal('recruit')" class="py-2.5 bg-syndicate-crimson text-white font-orbitron font-bold text-xs uppercase">입단 지원</button>
+                <button onclick="openAuthModal()" class="py-2.5 bg-syndicate-gold text-black font-orbitron font-bold text-xs uppercase">조직원 인증</button>
+            </div>
         </div>
+    </header>
 
-        <!-- RP Report Form -->
-        <form id="rpReportForm" onsubmit="submitReport(event, 'RP')">
-          <div class="form-group">
-            <label>RP 종류</label>
-            <select class="form-control" id="rpCategory" required>
-              <option value="세력분쟁/협상">세력 분쟁 및 협상</option>
-              <option value="암거래/환전">암거래 / 환전</option>
-              <option value="단속/긴급대응">경찰 단속 / 긴급 대응</option>
-              <option value="내부회의">조직 내부 회의</option>
-              <option value="기타">기타</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>상대 팩션</label>
-            <select class="form-control" id="targetFaction" required>
-              <option value="블러드">블러드</option>
-              <option value="흑룡회">흑룡회</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>RP 결과</label>
-            <select class="form-control" id="rpResult" required>
-              <option value="승리/성공">승리 / 성공</option>
-              <option value="타협/협상완료">타협 / 협상 완료</option>
-              <option value="손실/후퇴">손실 / 작전상 후퇴</option>
-              <option value="진행중">진행 중</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>상세 경과 및 보고 내용 (선택 항목)</label>
-            <textarea class="form-control" id="rpDetails" rows="4" placeholder="상세보고 내용을 입력하세요 (선택)"></textarea>
-          </div>
-          <button type="submit" class="btn-submit">RP 보고서 제출</button>
-        </form>
-
-        <!-- Trade Report Form -->
-        <form id="tradeReportForm" onsubmit="submitReport(event, 'TRADE')" style="display:none;">
-          <div class="form-group">
-            <label>상대 고유번호 (#)</label>
-            <input type="text" class="form-control" id="tradeTargetTag" placeholder="예: #1234" required>
-          </div>
-          <div class="form-group">
-            <label>상대 닉네임</label>
-            <input type="text" class="form-control" id="tradeTargetName" placeholder="예: 홍길동" required>
-          </div>
-          <div class="form-group">
-            <label>물품명</label>
-            <select class="form-control" id="tradeItem" required>
-              <option value="검은돈 환전">검은돈 환전</option>
-              <option value="하트캔디">하트캔디</option>
-              <option value="러쉬캔디">러쉬캔디</option>
-              <option value="기타">기타 타격물품</option>
-            </select>
-          </div>
-          <div style="display:flex; gap:15px;">
-            <div class="form-group" style="flex:1;">
-              <label>수량</label>
-              <input type="number" class="form-control" id="tradeQuantity" placeholder="0" required>
+    <section class="relative pt-36 pb-24 md:pt-48 md:pb-32 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-b from-syndicate-crimson/10 via-transparent to-syndicate-black pointer-events-none"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+            
+            <div class="inline-flex items-center space-x-3 px-4 py-1.5 bg-black/80 border border-syndicate-gold/40 rounded-full mb-8">
+                <span class="w-2.5 h-2.5 rounded-full bg-syndicate-crimson animate-pulse-fast"></span>
+                <span class="text-xs font-mono text-syndicate-gold tracking-widest uppercase">TAESAN FACTION - HIGH SECURITY CLEARANCE LEVEL 5</span>
             </div>
-            <div class="form-group" style="flex:1;">
-              <label>총 금액 (만원 단위)</label>
-              <input type="number" class="form-control" id="tradeAmount" placeholder="0" required>
-            </div>
-          </div>
-          <div class="form-group">
-            <label>비고 (거래 장소 등)</label>
-            <input type="text" class="form-control" id="tradeNotes" placeholder="비고 사항 입력">
-          </div>
-          <button type="submit" class="btn-submit">거래 보고서 제출</button>
-        </form>
-      </div>
 
+            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-serifKR font-black tracking-tight leading-tight mb-6">
+                <span class="block text-gray-400 text-lg sm:text-2xl font-mono tracking-widest mb-2">어둠 속에서 도시를 움직인다</span>
+                <span class="gold-text-shimmer">태산 (TAESAN)</span>
+            </h1>
+
+            <p class="max-w-3xl mx-auto text-base sm:text-lg text-gray-400 mb-10 leading-relaxed font-light">
+                우리는 암지의 규칙을 정의합니다. <br class="hidden sm:inline"/>
+                <strong class="text-syndicate-gold">검은돈 세탁·환전</strong>부터 최상의 선도를 자랑하는 <strong class="text-syndicate-crimson">하트캔디 & 러쉬캔디</strong> 독점 유통망까지.<br/>
+                압도적인 파쇄력과 자본력으로 음지 시장의 정점을 유지합니다.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button onclick="openModal('trade')" class="w-full sm:w-auto px-9 py-4 bg-syndicate-gold text-black font-orbitron font-black text-sm tracking-wider uppercase hover:bg-syndicate-goldBright shadow-xl shadow-syndicate-gold/20 flex items-center justify-center">
+                    <i class="fa-solid fa-coins mr-3 text-lg"></i> 신속 거래 및 환전 신청
+                </button>
+                <button onclick="openModal('recruit')" class="w-full sm:w-auto px-9 py-4 bg-black/80 border border-syndicate-crimson/80 text-white font-orbitron font-bold text-sm tracking-wider uppercase hover:bg-syndicate-crimson/40 transition-all flex items-center justify-center">
+                    <i class="fa-solid fa-shield-halved mr-3 text-syndicate-crimson"></i> 신규 조직원 입단 지원
+                </button>
+            </div>
+
+            <!-- Ticker Dashboard Metrics -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mt-20 text-left">
+                <div class="card-syndicate p-5 border-l-2 border-l-syndicate-gold">
+                    <div class="text-[10px] font-mono text-syndicate-muted uppercase">EXCHANGE RATE</div>
+                    <div class="font-orbitron font-bold text-xl text-syndicate-gold mt-1">92.5% CLEAR</div>
+                    <div class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-lock text-syndicate-gold mr-1"></i> 익명 추적 불가 수수료율</div>
+                </div>
+                <div class="card-syndicate p-5 border-l-2 border-l-syndicate-crimson">
+                    <div class="text-[10px] font-mono text-syndicate-muted uppercase">HEART CANDY STOCK</div>
+                    <div class="font-orbitron font-bold text-xl text-syndicate-crimson mt-1">10,000+ EA</div>
+                    <div class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-capsules text-syndicate-crimson mr-1"></i> 당일 대량 배송 지원</div>
+                </div>
+                <div class="card-syndicate p-5 border-l-2 border-l-syndicate-cyan">
+                    <div class="text-[10px] font-mono text-syndicate-muted uppercase">RUSH CANDY PURITY</div>
+                    <div class="font-orbitron font-bold text-xl text-syndicate-cyan mt-1">99.9% GRADE</div>
+                    <div class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-bolt text-syndicate-cyan mr-1"></i> 최고급 고순도 라인</div>
+                </div>
+                <div class="card-syndicate p-5 border-l-2 border-l-purple-500">
+                    <div class="text-[10px] font-mono text-syndicate-muted uppercase">ENFORCERS READY</div>
+                    <div class="font-orbitron font-bold text-xl text-purple-400 mt-1">24시간 대기</div>
+                    <div class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-user-ninja text-purple-400 mr-1"></i> 거래 현장 안전 호위</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee Ticker Banner -->
+    <div class="w-full bg-black border-y border-syndicate-gold/20 py-3 overflow-hidden relative">
+        <div class="flex whitespace-nowrap animate-marquee space-x-12 font-mono text-xs tracking-widest text-syndicate-gold/80 uppercase">
+            <span><i class="fa-solid fa-skull mr-2 text-syndicate-crimson"></i> TAESAN SYNDICATE</span>
+            <span><i class="fa-solid fa-money-bill-transfer mr-2 text-syndicate-gold"></i> BLACK MONEY LAUNDERING 24/7 ACTIVE</span>
+            <span><i class="fa-solid fa-heart-pulse mr-2 text-syndicate-crimson"></i> PREMIUM HEART CANDY BULK SUPPLY</span>
+            <span><i class="fa-solid fa-bolt mr-2 text-syndicate-cyan"></i> RUSH CANDY ULTRA HIGH PURITY</span>
+            <span><i class="fa-solid fa-skull mr-2 text-syndicate-crimson"></i> TAESAN SYNDICATE</span>
+            <span><i class="fa-solid fa-money-bill-transfer mr-2 text-syndicate-gold"></i> BLACK MONEY LAUNDERING 24/7 ACTIVE</span>
+        </div>
     </div>
-  </div>
 
-  <script>
-    // 🔗 구글 앱스 스크립트(Google Apps Script) 배포 URL 주소를 넣으시면 스프레드시트로 자동 전송됩니다.
-    const GOOGLE_SHEET_API_URL = "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+    <section id="business" class="py-28 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-20">
+                <span class="text-xs font-mono font-extrabold tracking-widest text-syndicate-gold uppercase">CORE BUSINESS</span>
+                <h2 class="text-3xl sm:text-5xl font-serifKR font-bold text-white mt-2">태산 핵심 독점 사업권</h2>
+                <div class="w-16 h-1 bg-gradient-to-r from-syndicate-gold to-syndicate-crimson mx-auto mt-4"></div>
+            </div>
 
-    let currentMember = null;
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Business 1: 검은돈 환전 -->
+                <div class="card-syndicate p-8 rounded-none relative border-t-2 border-t-syndicate-gold group">
+                    <div class="absolute top-4 right-4 text-xs font-mono text-syndicate-gold/40">BUSINESS #01</div>
+                    <div class="w-16 h-16 bg-syndicate-gold/10 border border-syndicate-gold/30 flex items-center justify-center text-syndicate-gold text-3xl mb-6 group-hover:bg-syndicate-gold group-hover:text-black transition-all">
+                        <i class="fa-solid fa-money-bill-transfer"></i>
+                    </div>
+                    <h3 class="text-2xl font-serifKR font-bold text-white mb-3">검은돈 세탁 & 환전</h3>
+                    <p class="text-sm text-gray-400 mb-6 leading-relaxed">
+                        출처 불분명 자금을 깨끗하고 안전한 화폐로 신속 변환합니다. 보안 통로를 통해 추적을 완벽히 차단하며 즉시 현금화 및 자금 이동을 보장합니다.
+                    </p>
+                    <ul class="space-y-2.5 text-xs font-mono text-gray-300 border-t border-white/10 pt-4 mb-8">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-gold mr-2"></i> 자금 추적 완전 차단 솔루션</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-gold mr-2"></i> 대량 권종 즉시 현금 정산</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-gold mr-2"></i> VIP 단골 우대 환전 수수료</li>
+                    </ul>
+                    <button onclick="openModal('trade')" class="w-full py-3 bg-syndicate-gold/10 border border-syndicate-gold/40 text-syndicate-gold font-orbitron font-bold text-xs uppercase hover:bg-syndicate-gold hover:text-black transition-all">
+                        환전 의뢰하기
+                    </button>
+                </div>
 
-    function openModal(id) {
-      document.getElementById(id).classList.add('active');
-    }
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-    }
+                <!-- Business 2: 하트캔디 판매 -->
+                <div class="card-syndicate p-8 rounded-none relative border-t-2 border-t-syndicate-crimson group">
+                    <div class="absolute top-4 right-4 text-xs font-mono text-syndicate-crimson/40">BUSINESS #02</div>
+                    <div class="w-16 h-16 bg-syndicate-crimson/10 border border-syndicate-crimson/30 flex items-center justify-center text-syndicate-crimson text-3xl mb-6 group-hover:bg-syndicate-crimson group-hover:text-white transition-all">
+                        <i class="fa-solid fa-heart-circle-bolt"></i>
+                    </div>
+                    <h3 class="text-2xl font-serifKR font-bold text-white mb-3">하트캔디 독점 유통</h3>
+                    <p class="text-sm text-gray-400 mb-6 leading-relaxed">
+                        시장에서 가장 높은 수요를 자랑하는 프리미엄 '하트캔디'라인입니다. 엄격한 품질관리를 거쳐 최고의 효능과 거래 가치를 자랑합니다.
+                    </p>
+                    <ul class="space-y-2.5 text-xs font-mono text-gray-300 border-t border-white/10 pt-4 mb-8">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-crimson mr-2"></i> 최상급 순도 및 품질 검증 완결</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-crimson mr-2"></i> 100개 / 500개 / 1,000개 단위 도매 가능</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-crimson mr-2"></i> 태산 전용 비밀 수송 라인 배송</li>
+                    </ul>
+                    <button onclick="openModal('trade')" class="w-full py-3 bg-syndicate-crimson/10 border border-syndicate-crimson/40 text-syndicate-crimson font-orbitron font-bold text-xs uppercase hover:bg-syndicate-crimson hover:text-white transition-all">
+                        하트캔디 구매 문의
+                    </button>
+                </div>
 
-    function handleLogin(e) {
-      e.preventDefault();
-      const memberId = document.getElementById('memberAuthId').value;
-      currentMember = memberId;
+                <!-- Business 3: 러쉬캔디 판매 -->
+                <div class="card-syndicate p-8 rounded-none relative border-t-2 border-t-syndicate-cyan group">
+                    <div class="absolute top-4 right-4 text-xs font-mono text-syndicate-cyan/40">BUSINESS #03</div>
+                    <div class="w-16 h-16 bg-syndicate-cyan/10 border border-syndicate-cyan/30 flex items-center justify-center text-syndicate-cyan text-3xl mb-6 group-hover:bg-syndicate-cyan group-hover:text-black transition-all">
+                        <i class="fa-solid fa-bolt-lightning"></i>
+                    </div>
+                    <h3 class="text-2xl font-serifKR font-bold text-white mb-3">러쉬캔디 고순도 공급</h3>
+                    <p class="text-sm text-gray-400 mb-6 leading-relaxed">
+                        즉각적인 반응과 극도의 도파민 자극을 자랑하는 하이엔드 '러쉬캔디' 라인업입니다. 소량으로도 압도적인 효과를 발휘하는 VIP 전용 품목입니다.
+                    </p>
+                    <ul class="space-y-2.5 text-xs font-mono text-gray-300 border-t border-white/10 pt-4 mb-8">
+                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-cyan mr-2"></i> 초고속 반응 극대화 제형</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-cyan mr-2"></i> 독점 정제 공정 특수 제형</li>
+                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-cyan mr-2"></i> 예약 주문제 및 점조직 배송</li>
+                    </ul>
+                    <button onclick="openModal('trade')" class="w-full py-3 bg-syndicate-cyan/10 border border-syndicate-cyan/40 text-syndicate-cyan font-orbitron font-bold text-xs uppercase hover:bg-syndicate-cyan hover:text-black transition-all">
+                        러쉬캔디 주문하기
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      document.getElementById('loginAuthScreen').style.display = 'none';
-      document.getElementById('dashboardScreen').classList.add('active');
-    }
+    <section id="exchange" class="py-24 bg-black/60 relative border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-mono font-extrabold tracking-widest text-syndicate-gold uppercase">RATES & PRICES</span>
+                <h2 class="text-3xl sm:text-4xl font-serifKR font-bold text-white mt-1">태산 공식 환전율 & 단가표</h2>
+                <p class="text-xs font-mono text-syndicate-gold/70 mt-2">* 시장 변동성에 따라 실시간 단가가 조정될 수 있습니다.</p>
+            </div>
 
-    function handleLogout() {
-      currentMember = null;
-      document.getElementById('loginAuthScreen').style.display = 'block';
-      document.getElementById('dashboardScreen').classList.remove('active');
-    }
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 환전 수수료표 -->
+                <div class="glass-syndicate p-8 border border-syndicate-gold/30">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+                        <h3 class="text-xl font-serifKR font-bold text-syndicate-gold flex items-center">
+                            <i class="fa-solid fa-vault mr-3"></i> 검은돈 세탁/환전 비율
+                        </h3>
+                        <span class="text-xs font-mono bg-syndicate-gold/20 text-syndicate-gold px-2.5 py-1">SECURE CLEARING</span>
+                    </div>
+                    <div class="space-y-4 font-mono text-sm">
+                        <div class="flex justify-between items-center p-3 bg-black/40 border border-white/5">
+                            <span class="text-gray-300">소액 거래 (1,000만 이하)</span>
+                            <span class="text-syndicate-gold font-bold">수수료 10% (수령 90%)</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-black/40 border border-syndicate-gold/30">
+                            <span class="text-gray-200">중형 거래 (5,000만 이하)</span>
+                            <span class="text-syndicate-gold font-bold">수수료 7.5% (수령 92.5%)</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-syndicate-gold/10 border border-syndicate-gold/60">
+                            <span class="text-white font-bold">대형/VIP 거래 (1억 이상)</span>
+                            <span class="text-syndicate-goldBright font-extrabold">수수료 5% (수령 95%)</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-xs text-gray-400 font-mono leading-relaxed">
+                        <i class="fa-solid fa-circle-exclamation text-syndicate-gold mr-1"></i> 현장 현금 교환 시 무장 인력 현장 동석으로 안전 보장.
+                    </div>
+                </div>
 
-    function switchReportTab(type) {
-      if(type === 'RP') {
-        document.getElementById('btnTabRp').classList.add('active');
-        document.getElementById('btnTabTrade').classList.remove('active');
-        document.getElementById('rpReportForm').style.display = 'block';
-        document.getElementById('tradeReportForm').style.display = 'none';
-      } else {
-        document.getElementById('btnTabRp').classList.remove('active');
-        document.getElementById('btnTabTrade').classList.add('active');
-        document.getElementById('rpReportForm').style.display = 'none';
-        document.getElementById('tradeReportForm').style.display = 'block';
-      }
-    }
+                <!-- 캔디 시세표 -->
+                <div class="glass-syndicate p-8 border border-syndicate-crimson/30">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
+                        <h3 class="text-xl font-serifKR font-bold text-syndicate-crimson flex items-center">
+                            <i class="fa-solid fa-pills mr-3"></i> 캔디 제품군 단가표
+                        </h3>
+                        <span class="text-xs font-mono bg-syndicate-crimson/20 text-syndicate-crimson px-2.5 py-1">WHOLESALE ONLY</span>
+                    </div>
+                    <div class="space-y-4 font-mono text-sm">
+                        <div class="flex justify-between items-center p-3 bg-black/40 border border-white/5">
+                            <div>
+                                <div class="text-white font-bold">하트캔디 (Heart Candy)</div>
+                                <div class="text-[10px] text-gray-500">기본 범용 라인</div>
+                            </div>
+                            <span class="text-syndicate-crimson font-bold">개당 ₩ 150,000</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-black/40 border border-syndicate-cyan/30">
+                            <div>
+                                <div class="text-white font-bold">러쉬캔디 (Rush Candy)</div>
+                                <div class="text-[10px] text-gray-500">고순도 하이엔드 라인</div>
+                            </div>
+                            <span class="text-syndicate-cyan font-bold">개당 ₩ 300,000</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-syndicate-crimson/10 border border-syndicate-crimson/60">
+                            <div>
+                                <div class="text-white font-bold">태산 스페셜 벌크 (100개 세트)</div>
+                                <div class="text-[10px] text-syndicate-gold">하트 50 + 러쉬 50 세트 할인</div>
+                            </div>
+                            <span class="text-syndicate-goldBright font-extrabold">₩ 20,000,000</span>
+                        </div>
+                    </div>
+                    <div class="mt-6 text-xs text-gray-400 font-mono leading-relaxed">
+                        <i class="fa-solid fa-shield text-syndicate-crimson mr-1"></i> 모든 캔디류는 미개봉 인증 파우치로 전달됩니다.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    function submitReport(e, type) {
-      e.preventDefault();
-      
-      let payload = {
-        reportType: type,
-        author: currentMember || '미인증 조직원'
-      };
+    <section id="crew" class="py-28 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-xs font-mono font-extrabold tracking-widest text-syndicate-gold uppercase">SYNDICATE HIERARCHY</span>
+                <h2 class="text-3xl sm:text-5xl font-serifKR font-bold text-white mt-2">태산 조직 조직도</h2>
+            </div>
 
-      if(type === 'RP') {
-        payload.rpCategory = document.getElementById('rpCategory').value;
-        payload.targetFaction = document.getElementById('targetFaction').value;
-        payload.rpResult = document.getElementById('rpResult').value;
-        payload.details = document.getElementById('rpDetails').value;
-      } else {
-        payload.targetTag = document.getElementById('tradeTargetTag').value;
-        payload.targetName = document.getElementById('tradeTargetName').value;
-        payload.item = document.getElementById('tradeItem').value;
-        payload.quantity = document.getElementById('tradeQuantity').value;
-        payload.amount = document.getElementById('tradeAmount').value;
-        payload.notes = document.getElementById('tradeNotes').value;
-      }
+            <!-- Supreme Leader Card -->
+            <div class="max-w-md mx-auto mb-10">
+                <div class="card-syndicate p-6 text-center border-2 border-syndicate-gold gold-border-glow relative">
+                    <span class="absolute top-3 right-4 text-[10px] font-mono bg-syndicate-gold text-black font-extrabold px-2 py-0.5">SUPREME BOSS</span>
+                    <div class="w-20 h-20 bg-black border-2 border-syndicate-gold rounded-full mx-auto mb-4 flex items-center justify-center text-syndicate-gold text-3xl font-serifKR font-black">
+                        太
+                    </div>
+                    <h3 class="text-2xl font-serifKR font-bold text-white">태산 총수</h3>
+                    <p class="text-xs font-mono text-syndicate-gold mt-1">김억지 (#15)</p>
+                </div>
+            </div>
 
-      // Google Sheet 전송
-      if (GOOGLE_SHEET_API_URL && GOOGLE_SHEET_API_URL !== "YOUR_GOOGLE_APPS_SCRIPT_URL_HERE") {
-        fetch(GOOGLE_SHEET_API_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        }).then(() => {
-          alert('보고서가 구글 스프레드시트로 정상 전송되었습니다.');
-          e.target.reset();
-        }).catch(err => {
-          console.error(err);
-          alert('전송 중 오류가 발생했습니다.');
+            <!-- Officers Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-10">
+                <div class="card-syndicate p-6 text-center border-t-2 border-t-syndicate-crimson">
+                    <div class="text-[10px] font-mono text-syndicate-crimson mb-1">GOMUN (고문)</div>
+                    <h4 class="text-xl font-bold text-white">호 놀</h4>
+                </div>
+                <div class="card-syndicate p-6 text-center border-t-2 border-t-syndicate-crimson">
+                    <div class="text-[10px] font-mono text-syndicate-crimson mb-1">SUPPLY MANAGER (유통이구)</div>
+                    <h4 class="text-xl font-bold text-white">서야율</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="border-t border-white/10 py-10 bg-black text-xs font-mono text-syndicate-muted">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center space-x-3">
+                <div class="w-6 h-6 bg-syndicate-gold text-black font-bold flex items-center justify-center font-serifKR">太</div>
+                <span class="text-white font-bold font-cinzel tracking-widest">TAESAN SYNDICATE</span>
+                <span>© 2026 TAESAN FACTION. ALL RIGHTS RESERVED.</span>
+            </div>
+            <div class="text-syndicate-gold/60">
+                <span>DARKNET ENCRYPTED CONNECTION :: GOOGLE SHEETS ACTIVE</span>
+            </div>
+        </div>
+    </footer>
+
+    <div id="modalOverlay" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div id="modalBox" class="glass-syndicate w-full max-w-xl p-6 sm:p-8 border border-syndicate-gold/40 relative transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
+            <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
+                <div class="flex items-center space-x-3">
+                    <div class="w-3 h-3 bg-syndicate-gold animate-pulse"></div>
+                    <h3 id="modalTitle" class="font-serifKR font-bold text-xl text-white">태산 접수창구</h3>
+                </div>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-white p-2">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <form id="publicForm" onsubmit="handlePublicSubmit(event)" class="space-y-4 font-mono text-xs">
+                <input type="hidden" id="publicFormType" value="recruit">
+
+                <div>
+                    <label class="block text-syndicate-gold uppercase mb-1">성명 / 암호 닉네임 *</label>
+                    <input type="text" id="pubName" required placeholder="예: 적룡 / User#9982" class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                </div>
+
+                <div>
+                    <label class="block text-syndicate-gold uppercase mb-1">연락처 / 디스코드 *</label>
+                    <input type="text" id="pubContact" required placeholder="@Telegram_ID 또는 Discord" class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                </div>
+
+                <div id="recruitFields">
+                    <label class="block text-syndicate-gold uppercase mb-1">희망 보직 *</label>
+                    <select id="pubRole" class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold mb-4">
+                        <option value="타격대">현장 타격 및 무장 호위대</option>
+                        <option value="자금팀">환전 및 세탁 자금 관리원</option>
+                        <option value="유통팀">하트&러쉬 캔디 비밀 배송원</option>
+                    </select>
+
+                    <label class="block text-syndicate-gold uppercase mb-1">각오 및 이력 *</label>
+                    <textarea id="pubMsgRecruit" rows="3" placeholder="충성의 각오를 적어주세요." class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold"></textarea>
+                </div>
+
+                <div id="tradeFields" class="hidden">
+                    <label class="block text-syndicate-gold uppercase mb-1">거래 항목 선택 *</label>
+                    <select id="pubTradeItem" class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold mb-4">
+                        <option value="검은돈 환전">검은돈 세탁 & 환전 의뢰</option>
+                        <option value="하트캔디">하트캔디 대량 구매</option>
+                        <option value="러쉬캔디">러쉬캔디 고순도 주문</option>
+                    </select>
+
+                    <label class="block text-syndicate-gold uppercase mb-1">거래 수량 및 상세 제안 *</label>
+                    <textarea id="pubMsgTrade" rows="3" placeholder="희망 수량 및 액수를 입력하세요." class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold"></textarea>
+                </div>
+
+                <div class="pt-4 flex justify-end space-x-3">
+                    <button type="button" onclick="closeModal()" class="px-5 py-3 border border-white/10 text-gray-400 hover:text-white">취소</button>
+                    <button type="submit" id="pubSubmitBtn" class="px-6 py-3 bg-syndicate-gold text-black font-extrabold uppercase hover:bg-syndicate-goldBright">전송하기</button>
+                </div>
+            </form>
+
+            <div id="pubSuccessMsg" class="hidden text-center py-8">
+                <div class="w-14 h-14 bg-syndicate-gold/20 text-syndicate-gold rounded-full flex items-center justify-center text-2xl mx-auto mb-4 border border-syndicate-gold">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <h4 class="text-xl font-serifKR font-bold text-white mb-2">접수 및 저장 완료</h4>
+                <p class="text-xs text-gray-400 mb-6 font-mono">구글 시트 연동 데이터 전송이 완료되었습니다. 확인 후 담당 간부가 접촉합니다.</p>
+                <button onclick="closeModal()" class="px-6 py-2 bg-syndicate-gold text-black font-bold text-xs uppercase">닫기</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="authModalOverlay" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-syndicate w-full max-w-md p-6 sm:p-8 border border-syndicate-gold/50 relative">
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-syndicate-gold/10 border border-syndicate-gold text-syndicate-gold rounded-full flex items-center justify-center text-xl mx-auto mb-3">
+                    <i class="fa-solid fa-user-lock"></i>
+                </div>
+                <h3 class="text-2xl font-serifKR font-bold text-white">조직원 전용 인증</h3>
+                <p class="text-xs font-mono text-syndicate-gold/80 mt-1">태산 암호화 보고서 통합 포털</p>
+            </div>
+
+            <!-- Demo Hint Banner -->
+            <div class="bg-syndicate-gold/10 border border-syndicate-gold/30 p-3 rounded mb-6 text-center text-xs font-mono text-syndicate-gold">
+                <i class="fa-solid fa-info-circle mr-1"></i> 테스트 아이디: <b class="text-white">taesan</b> / PIN: <b class="text-white">7777</b>
+            </div>
+
+            <form onsubmit="handleAuthLogin(event)" class="space-y-4 font-mono text-xs">
+                <div>
+                    <label class="block text-gray-400 mb-1 uppercase">에이전트 ID</label>
+                    <input type="text" id="authAgentId" required placeholder="에이전트 ID 입력" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                </div>
+                <div>
+                    <label class="block text-gray-400 mb-1 uppercase">보안 PIN 번호</label>
+                    <input type="password" id="authPin" required placeholder="4자리 PIN" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                </div>
+                <div id="authError" class="hidden text-syndicate-crimson text-xs text-center font-bold">
+                    인증 실패: 아이디 또는 PIN 번호가 올바르지 않습니다.
+                </div>
+                <div class="pt-2 flex gap-3">
+                    <button type="button" onclick="closeAuthModal()" class="w-1/2 py-3 border border-white/20 text-gray-400">취소</button>
+                    <button type="submit" class="w-1/2 py-3 bg-syndicate-gold text-black font-extrabold uppercase hover:bg-syndicate-goldBright">인증 승인</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="memberPortalOverlay" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-50 overflow-y-auto hidden">
+        <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+            
+            <!-- Dashboard Header -->
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-syndicate-gold/30 pb-6 mb-8 gap-4">
+                <div>
+                    <div class="flex items-center space-x-3">
+                        <span class="w-3 h-3 bg-green-500 rounded-full animate-ping"></span>
+                        <h2 class="text-2xl sm:text-3xl font-serifKR font-bold text-white">태산 보안 기밀 대시보드</h2>
+                    </div>
+                    <p class="text-xs font-mono text-syndicate-gold mt-1">인증원: <span id="portalAgentName" class="text-white">김억지 (#15)</span> | Google Sheets 자동 연동 활성화</p>
+                </div>
+                <button onclick="closeMemberPortal()" class="px-5 py-2.5 bg-syndicate-crimson/80 text-white font-mono text-xs uppercase hover:bg-syndicate-crimson flex items-center gap-2">
+                    <i class="fa-solid fa-right-from-bracket"></i> 로그아웃 및 세션 종료
+                </button>
+            </div>
+
+            <!-- Report Navigation Tabs -->
+            <div class="flex border-b border-white/10 mb-8 font-mono text-xs">
+                <button id="tabRpBtn" onclick="switchPortalTab('rp')" class="px-6 py-3 border-b-2 border-syndicate-gold text-syndicate-gold font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-shield-cat"></i> RP 보고서 작성
+                </button>
+                <button id="tabTradeBtn" onclick="switchPortalTab('trade')" class="px-6 py-3 border-b-2 border-transparent text-gray-400 hover:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-file-invoice-dollar"></i> 거래 보고서 작성
+                </button>
+                <button id="tabLogsBtn" onclick="switchPortalTab('logs')" class="px-6 py-3 border-b-2 border-transparent text-gray-400 hover:text-white flex items-center gap-2">
+                    <i class="fa-solid fa-list-check"></i> 제출 로그 기록
+                </button>
+            </div>
+
+            <!-- TAB 1: RP 보고서 작성란 -->
+            <div id="tabRpSection" class="glass-syndicate p-6 sm:p-8 border border-syndicate-gold/30 mb-8">
+                <h3 class="text-xl font-serifKR font-bold text-syndicate-gold mb-6 flex items-center">
+                    <i class="fa-solid fa-scroll mr-3"></i> [조직 전용] RP (Roleplay) 상황 보고서 작성
+                </h3>
+
+                <form onsubmit="handleRpSubmit(event)" class="space-y-6 font-mono text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-syndicate-gold uppercase mb-2">RP 종류 *</label>
+                            <select id="rpType" required class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                                <option value="[전체]">조직 점령전</option>
+                                <option value="[전체]태산 편의점">태산 편의점</option>
+                                <option value="[지상]젠트리 호텔">지상 전쟁</option>
+                                <option value="[지상]미로">미로 전쟁</option>
+                                <option value="[전체]차량 전쟁">차량 전쟁</option>
+                                <option value="[전체]청부 RP">미로 전쟁</option>
+                                <option value="기타">기타</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-syndicate-gold uppercase mb-2">상대 팩션*</label>
+                            <input type="text" id="rpTargetFaction" required placeholder="예: 경찰청 / LCN 파벌 / 무소속" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                        </div>
+
+                        <div>
+                            <label class="block text-syndicate-gold uppercase mb-2">RP 결과 *</label>
+                            <select id="rpResult" required class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                                <option value="승리">승리</option>
+                                <option value="무승부">무승부</option>
+                                <option value="패배">패배</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-syndicate-gold uppercase mb-2">상세 경과 및 보고 내용 *</label>
+                        <textarea id="rpDetails" rows="5" required placeholder="RP 진행 위치, 참여 조직원, 분쟁 내용, 최종 합의 사항 등을 상세히 기재하십시오." class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold"></textarea>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="px-8 py-3 bg-syndicate-gold text-black font-extrabold uppercase hover:bg-syndicate-goldBright flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> RP 보고서 구글 시트 전송
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB 2: 거래 보고서 작성란 -->
+            <div id="tabTradeSection" class="glass-syndicate p-6 sm:p-8 border border-syndicate-gold/30 mb-8 hidden">
+                <h3 class="text-xl font-serifKR font-bold text-syndicate-gold mb-6 flex items-center">
+                    <i class="fa-solid fa-file-invoice-dollar mr-3"></i> [조직 전용] 캔디 거래 정산 보고서
+                </h3>
+
+                <form onsubmit="handleTradeSubmit(event)" class="space-y-6 font-mono text-xs">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div>
+                            <label class="block text-syndicate-gold uppercase mb-2">상대 고유번호 (#) *</label>
+                            <input type="text" id="tradeTargetTag" required placeholder="예: #1234" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                        </div>
+
+                        <div>
+                            <label class="block text-syndicate-gold uppercase mb-2">상대 닉네임 *</label>
+                            <input type="text" id="tradeTargetName" required placeholder="예: 홍길동" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                        </div>
+
+                        <div>
+                            <label class="block text-syndicate-gold uppercase mb-2">거래 물품명 *</label>
+                            <select id="tradeItemName" required class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                                <option value="검은돈 환전">검은돈 환전</option>
+                                <option value="하트캔디">하트캔디 (Heart Candy)</option>
+                                <option value="러쉬캔디">러쉬캔디 (Rush Candy)</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-syndicate-gold uppercase mb-2">거래 수량 *</label>
+                            <input type="text" id="tradeQty" required placeholder="예: 100개 / 5,000만원" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                        </div>
+
+                        <div>
+                            <label class="block text-syndicate-gold uppercase mb-2">총 거래 금액 (₩) *</label>
+                            <input type="text" id="tradeAmount" required placeholder="예: ₩ 15,000,000" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                        </div>
+
+                        <div>
+                            <label class="block text-syndicate-gold uppercase mb-2">비고 / 장소 및 결제 방식</label>
+                            <input type="text" id="tradeNotes" placeholder="예: 항구 3번 창고 / 현금 즉시 지급" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="px-8 py-3 bg-syndicate-gold text-black font-extrabold uppercase hover:bg-syndicate-goldBright flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane"></i> 거래 보고서 구글 시트 전송
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- TAB 3: 최근 제출 로그 기록 -->
+            <div id="tabLogsSection" class="glass-syndicate p-6 sm:p-8 border border-syndicate-gold/30 mb-8 hidden">
+                <h3 class="text-xl font-serifKR font-bold text-white mb-4 flex items-center">
+                    <i class="fa-solid fa-database mr-3 text-syndicate-gold"></i> 실시간 보고서 전송 로그 기록
+                </h3>
+                <p class="text-xs font-mono text-gray-400 mb-6">구글 시트 연동 API를 통해 전송된 최근 제출 내역입니다.</p>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full font-mono text-xs text-left text-gray-300">
+                        <thead class="bg-black/80 text-syndicate-gold uppercase border-b border-syndicate-gold/30">
+                            <tr>
+                                <th class="p-3">시간</th>
+                                <th class="p-3">분류</th>
+                                <th class="p-3">상대/유형</th>
+                                <th class="p-3">결과/금액</th>
+                                <th class="p-3">상세 내용</th>
+                            </tr>
+                        </thead>
+                        <tbody id="logsTableBody" class="divide-y divide-white/10">
+                            <tr>
+                                <td class="p-3 text-gray-500">2026-09-21 01:20</td>
+                                <td class="p-3 text-syndicate-gold font-bold">RP 보고서</td>
+                                <td class="p-3">경찰청 (단속/긴급대응)</td>
+                                <td class="p-3 text-green-400">승리/성공</td>
+                                <td class="p-3 text-gray-400">항구 단속 현장 대응 완료 및 자금 회수</td>
+                            </tr>
+                            <tr>
+                                <td class="p-3 text-gray-500">2026-09-21 01:05</td>
+                                <td class="p-3 text-syndicate-cyan font-bold">거래 보고서</td>
+                                <td class="p-3">#8821 (홍길동)</td>
+                                <td class="p-3 text-syndicate-gold">₩ 15,000,000</td>
+                                <td class="p-3 text-gray-400">하트캔디 100개 현장 교환 완료</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // GOOGLE SHEETS API CONFIGURATION
+        // ==========================================
+        // Replace this URL with your Google Apps Script Web App URL!
+        const GOOGLE_SHEET_API_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+        // Sound BGM State
+        let bgmAudio = new Audio("https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3");
+        bgmAudio.loop = true;
+        let isPlaying = false;
+
+        function toggleAudio() {
+            const btnIcon = document.getElementById('bgmIcon');
+            if (isPlaying) {
+                bgmAudio.pause();
+                btnIcon.className = "fa-solid fa-volume-xmark";
+            } else {
+                bgmAudio.play().catch(e => console.log("BGM autoplay prevented"));
+                btnIcon.className = "fa-solid fa-volume-high text-syndicate-gold";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // Mobile Menu Toggle
+        const mobileBtn = document.getElementById('mobileBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+        document.querySelectorAll('.m-link').forEach(link => {
+            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
         });
-      } else {
-        alert('보고서가 등록되었습니다. (스프레드시트 URL을 설정하시면 실시간 자동 기록됩니다)');
-        e.target.reset();
-      }
-    }
-  </script>
+
+        // Public Modal Handler
+        const overlay = document.getElementById('modalOverlay');
+        const modalBox = document.getElementById('modalBox');
+        const modalTitle = document.getElementById('modalTitle');
+        const recruitFields = document.getElementById('recruitFields');
+        const tradeFields = document.getElementById('tradeFields');
+        const pubSubmitBtn = document.getElementById('pubSubmitBtn');
+        const publicFormType = document.getElementById('publicFormType');
+        const publicForm = document.getElementById('publicForm');
+        const pubSuccessMsg = document.getElementById('pubSuccessMsg');
+
+        function openModal(mode) {
+            publicForm.reset();
+            publicForm.classList.remove('hidden');
+            pubSuccessMsg.classList.add('hidden');
+
+            if (mode === 'recruit') {
+                publicFormType.value = 'recruit';
+                modalTitle.innerText = '태산(TAESAN) 입사/입단 지원서';
+                recruitFields.classList.remove('hidden');
+                tradeFields.classList.add('hidden');
+                pubSubmitBtn.className = 'px-6 py-3 bg-syndicate-crimson text-white font-extrabold uppercase hover:bg-red-600';
+            } else {
+                publicFormType.value = 'trade';
+                modalTitle.innerText = '태산(TAESAN) 비밀 거래 접수';
+                recruitFields.classList.add('hidden');
+                tradeFields.classList.remove('hidden');
+                pubSubmitBtn.className = 'px-6 py-3 bg-syndicate-gold text-black font-extrabold uppercase hover:bg-syndicate-goldBright';
+            }
+
+            overlay.classList.remove('pointer-events-none', 'opacity-0');
+            overlay.classList.add('opacity-100');
+            modalBox.classList.remove('scale-95');
+            modalBox.classList.add('scale-100');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            overlay.classList.remove('opacity-100');
+            modalBox.classList.add('scale-95');
+            modalBox.classList.remove('scale-100');
+            document.body.style.overflow = 'auto';
+        }
+
+        function handlePublicSubmit(e) {
+            e.preventDefault();
+            const mode = publicFormType.value;
+            const payload = {
+                type: mode === 'recruit' ? '입단 지원' : '비밀 거래 문의',
+                name: document.getElementById('pubName').value,
+                contact: document.getElementById('pubContact').value,
+                details: mode === 'recruit' 
+                    ? `[보직] ${document.getElementById('pubRole').value} | [내용] ${document.getElementById('pubMsgRecruit').value}`
+                    : `[품목] ${document.getElementById('pubTradeItem').value} | [제안] ${document.getElementById('pubMsgTrade').value}`
+            };
+
+            sendToGoogleSheets(payload);
+            publicForm.classList.add('hidden');
+            pubSuccessMsg.classList.remove('hidden');
+        }
+
+        // Member Auth Modal & Portal logic
+        const authModalOverlay = document.getElementById('authModalOverlay');
+        const authError = document.getElementById('authError');
+        const memberPortalOverlay = document.getElementById('memberPortalOverlay');
+
+        function openAuthModal() {
+            authError.classList.add('hidden');
+            authModalOverlay.classList.remove('pointer-events-none', 'opacity-0');
+            authModalOverlay.classList.add('opacity-100');
+        }
+
+        function closeAuthModal() {
+            authModalOverlay.classList.add('opacity-0', 'pointer-events-none');
+        }
+
+        function handleAuthLogin(e) {
+            e.preventDefault();
+            const agentId = document.getElementById('authAgentId').value.trim();
+            const pin = document.getElementById('authPin').value.trim();
+
+            if ((agentId === 'taesan' || agentId === '김억지') && pin === '7777') {
+                closeAuthModal();
+                memberPortalOverlay.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            } else {
+                authError.classList.remove('hidden');
+            }
+        }
+
+        function closeMemberPortal() {
+            memberPortalOverlay.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Tab Switcher inside Portal
+        function switchPortalTab(tab) {
+            const tabs = ['Rp', 'Trade', 'Logs'];
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab${t}Btn`);
+                const sec = document.getElementById(`tab${t}Section`);
+                if (t.toLowerCase() === tab) {
+                    btn.className = "px-6 py-3 border-b-2 border-syndicate-gold text-syndicate-gold font-bold flex items-center gap-2";
+                    sec.classList.remove('hidden');
+                } else {
+                    btn.className = "px-6 py-3 border-b-2 border-transparent text-gray-400 hover:text-white flex items-center gap-2";
+                    sec.classList.add('hidden');
+                }
+            });
+        }
+
+        // Handle RP Report Submission
+        function handleRpSubmit(e) {
+            e.preventDefault();
+            const payload = {
+                type: 'RP 보고서',
+                rpType: document.getElementById('rpType').value,
+                targetFaction: document.getElementById('rpTargetFaction').value,
+                result: document.getElementById('rpResult').value,
+                details: document.getElementById('rpDetails').value
+            };
+
+            sendToGoogleSheets(payload);
+            addLogToTable('RP 보고서', `${payload.targetFaction} (${payload.rpType})`, payload.result, payload.details);
+            alert("✅ RP 보고서가 성공적으로 전송되었습니다.");
+            e.target.reset();
+            switchPortalTab('logs');
+        }
+
+        // Handle Trade Report Submission
+        function handleTradeSubmit(e) {
+            e.preventDefault();
+            const payload = {
+                type: '거래 보고서',
+                targetTag: document.getElementById('tradeTargetTag').value,
+                targetName: document.getElementById('tradeTargetName').value,
+                itemName: document.getElementById('tradeItemName').value,
+                qty: document.getElementById('tradeQty').value,
+                amount: document.getElementById('tradeAmount').value,
+                notes: document.getElementById('tradeNotes').value
+            };
+
+            sendToGoogleSheets(payload);
+            addLogToTable('거래 보고서', `${payload.targetTag} (${payload.targetName})`, payload.amount, `${payload.itemName} ${payload.qty} | ${payload.notes}`);
+            alert("✅ 거래 보고서가 성공적으로 전송되었습니다.");
+            e.target.reset();
+            switchPortalTab('logs');
+        }
+
+        // Add dynamically submitted log to UI Table
+        function addLogToTable(category, target, result, details) {
+            const tbody = document.getElementById('logsTableBody');
+            const now = new Date().toLocaleString('ko-KR', { hour12: false }).slice(0, 16);
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td class="p-3 text-gray-500">${now}</td>
+                <td class="p-3 text-syndicate-gold font-bold">${category}</td>
+                <td class="p-3">${target}</td>
+                <td class="p-3 text-green-400">${result}</td>
+                <td class="p-3 text-gray-400">${details}</td>
+            `;
+            tbody.insertBefore(tr, tbody.firstChild);
+        }
+
+        // Google Sheets Fetch API Wrapper
+        function sendToGoogleSheets(data) {
+            if (GOOGLE_SHEET_API_URL === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE") {
+                console.log("[DEMO MODE] Data ready to send to Google Sheets:", data);
+                return;
+            }
+
+            fetch(GOOGLE_SHEET_API_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+            .then(() => console.log("Data successfully posted to Google Sheets"))
+            .catch(err => console.error("Google Sheets Sync Error:", err));
+        }
+    </script>
 </body>
 </html>
