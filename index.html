@@ -97,7 +97,7 @@ body{background:var(--bg-dark);color:#fff;font-family:'Pretendard',sans-serif;mi
 <div style="margin-bottom:16px"><label class="form-label">RP 카테고리</label><select class="hud-input" id="rpKind" required style="color:#fff;background:var(--bg-dark)">
 <option>[전체] 조직 점령전</option><option>[전체] 태산 편의점</option><option>[지상] 젠트리 호텔</option><option>[지상] 지상 미로</option><option>[차량] 차량 남부공항</option><option>[전체] 청부 RP</option></select></div>
 <div class="form-grid">
-<div><label class="form-label">상대 팩션</label><select class="hud-input" id="rpFaction" required style="color:#fff;background:var(--bg-dark)"><option>경찰</option><option>블러드</option><option>흑룡회</option></select></div>
+<div><label class="form-label">상대 팩션</label><select class="hud-input" id="rpFaction" required style="color:#fff;background:var(--bg-dark)"><option>시민</option><option>경찰</option><option>블러드</option><option>흑룡회</option></select></div>
 <div><label class="form-label">결과</label><select class="hud-input" id="rpOutcome" required style="color:#fff;background:var(--bg-dark)"><option>승리</option><option>무승부</option><option>패배</option></select></div>
 </div>
 <div style="margin-top:16px"><label class="form-label">상세 보고 내용</label><textarea class="hud-input" id="rpDetails" rows="4" style="resize:none" placeholder="상세 내용을 입력하세요."></textarea></div>
@@ -198,7 +198,7 @@ function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);partic
 
 const GOOGLE_SHEET_API_URL="https://script.google.com/macros/s/AKfycbxxZDyhYlhateBk_W0K1smkNjZGUw3u_IkD--WT0-Kj3fkPywQlsNVZ5gLNHkxqn1K8/exec";
 const MEMBER_LIST=["지니아스(139)","이대발(1923)","태석(222)","희승(2002)","성훈(1504)","호놀(7)","김억지(15)","왕조아 (1974)","애호박(733)","흑자(689)"];
-const ALLOWED_USERS={"지니아스":{pin:"1234",rank:"두목"},"태산":{pin:"5678",rank:"부두목"}};
+const ALLOWED_USERS={"지니아스":{pin:"777777",rank:"두목"},"이대발":{pin:"000000",rank:"부두목"},"호놀":{pin:"050422",rank:"원로"},"흑자":{pin:"0000",rank:"막내"}};
 const CANDY_RULES={"하트캔디":{unitPrice:5000000,beaconFeePerUnit:250000},"러쉬캔디":{unitPrice:3000000,beaconFeePerUnit:150000}};
 let localReports=[],activeUser=null,selectedMembers=new Set(),currentEditRecord=null;
 let attendanceRecords=JSON.parse(localStorage.getItem('taesan_attendance')||'[]');
