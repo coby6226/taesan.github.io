@@ -20,3 +20,40 @@ body {
   gap: 20px;
   padding: 40px;
 }
+
+/* 관리자 기록 관리 */
+.admin-action-group {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.admin-action-btn {
+  border: 1px solid var(--border-light);
+  background: rgba(255,255,255,0.08);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  transition: 0.2s;
+}
+
+.admin-action-btn:hover {
+  background: rgba(255,255,255,0.18);
+  transform: translateY(-1px);
+}
+
+.admin-edit-btn {
+  border-color: rgba(96,165,250,0.5);
+  color: #60a5fa;
+}
+
+.admin-delete-btn {
+  border-color: rgba(248,113,113,0.5);
+  color: #f87171;
+}
+
+.admin-delete-btn:hover {
+  background: rgba(248,113,113,0.15);
+}
