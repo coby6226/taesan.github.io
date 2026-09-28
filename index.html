@@ -1,924 +1,524 @@
 <!DOCTYPE html>
-<html lang="ko" class="scroll-smooth dark">
+<html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TAESAN SYNDICATE | 태산 (陰地支配)</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Noto+Serif+KR:wght@600;900&family=Orbitron:wght@500;700;900&family=Pretendard:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        syndicate: {
-                            black: '#0a0a0c',
-                            void: '#121318',
-                            card: 'rgba(18, 19, 24, 0.85)',
-                            gold: '#ffaa00',
-                            goldBright: '#ffd000',
-                            crimson: '#ff3366',
-                            blood: '#e60039',
-                            cyan: '#00f2fe',
-                            muted: '#6B7280'
-                        }
-                    },
-                    fontFamily: {
-                        orbitron: ['Orbitron', 'sans-serif'],
-                        cinzel: ['Cinzel', 'serif'],
-                        serifKR: ['Noto Serif KR', 'serif'],
-                        pretendard: ['Pretendard', 'sans-serif'],
-                    },
-                    animation: {
-                        'pulse-fast': 'pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-                        'marquee': 'marquee 25s linear infinite'
-                    },
-                    keyframes: {
-                        marquee: {
-                            '0%': { transform: 'translateX(0%)' },
-                            '100%': { transform: 'translateX(-50%)' }
-                        }
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            background-color: #0a0a0c;
-            color: #E5E7EB;
-            font-family: 'Pretendard', sans-serif;
-            overflow-x: hidden;
-        }
-
-        .gold-border-glow {
-            box-shadow: 0 0 15px rgba(255, 170, 0, 0.25), inset 0 0 15px rgba(255, 170, 0, 0.1);
-        }
-
-        .crimson-glow {
-            box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
-        }
-
-        .gold-text-shimmer {
-            background: linear-gradient(135deg, #FFF 0%, #ffaa00 50%, #996600 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .syndicate-grid {
-            background-image: linear-gradient(to right, rgba(255, 170, 0, 0.03) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(255, 51, 102, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-
-        .scanlines {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.2) 50%);
-            background-size: 100% 4px;
-            z-index: 40;
-            opacity: 0.5;
-        }
-
-        .glass-syndicate {
-            background: rgba(18, 19, 24, 0.90);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 170, 0, 0.18);
-        }
-
-        .card-syndicate {
-            background: rgba(22, 24, 31, 0.80);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .card-syndicate:hover {
-            border-color: rgba(255, 170, 0, 0.5);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px -10px rgba(255, 170, 0, 0.2);
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: #0a0a0c; }
-        ::-webkit-scrollbar-thumb { background: #332200; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #ffaa00; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TAESAN OPERATIONS SYSTEM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Pretendard:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+--white-primary:#fff;--white-glow:rgba(255,255,255,.85);--white-dim:rgba(255,255,255,.65);
+--white-muted:rgba(255,255,255,.35);--border-light:rgba(255,255,255,.2);--bg-dark:#0b0d12;
+--panel-bg:rgba(18,22,31,.75);--input-bg:rgba(255,255,255,.05);--accent-green:#10b981;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg-dark);color:#fff;font-family:'Pretendard',sans-serif;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;position:relative;overflow-x:hidden}
+#bgCanvas{position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:0;pointer-events:none}
+.ambient-glow{position:fixed;width:600px;height:600px;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,rgba(255,255,255,0) 70%);top:50%;left:50%;transform:translate(-50%,-50%);z-index:0;pointer-events:none}
+.login-card-wrapper{position:relative;z-index:10;width:100%;max-width:420px}
+.login-card{background:var(--panel-bg);border:1px solid var(--border-light);backdrop-filter:blur(20px);border-radius:20px;padding:45px 35px;box-shadow:0 15px 35px rgba(0,0,0,.5);position:relative;overflow:hidden}
+.login-card:before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#fff,transparent)}
+.brand-title{font-family:'Cinzel',serif;font-size:2.2rem;font-weight:900;text-align:center;letter-spacing:6px;color:#fff;text-shadow:0 0 15px rgba(255,255,255,.6);margin-bottom:6px}
+.brand-sub{text-align:center;font-size:.75rem;color:var(--white-muted);letter-spacing:3px;margin-bottom:35px;font-weight:600}
+.input-box{position:relative;margin-bottom:20px}.input-box i{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--white-muted)}
+.white-input{width:100%;background:var(--input-bg);border:1px solid var(--border-light);padding:15px 16px 15px 48px;border-radius:10px;color:#fff;font-size:.95rem;outline:none}
+.white-input:focus,.hud-input:focus{border-color:rgba(255,255,255,.8);box-shadow:0 0 15px rgba(255,255,255,.15);background:rgba(255,255,255,.08)}
+.white-btn{width:100%;padding:15px;background:#fff;border:none;border-radius:10px;color:#0a0d14;font-size:.95rem;font-weight:800;letter-spacing:1px;cursor:pointer;transition:.3s;box-shadow:0 0 20px rgba(255,255,255,.2);margin-top:10px}
+.white-btn:hover{background:#f0f0f0;box-shadow:0 0 30px rgba(255,255,255,.4);transform:translateY(-2px)}
+.app-container{width:100%;max-width:1100px;display:flex;flex-direction:column;gap:20px;position:relative;z-index:10}
+.top-bar{background:var(--panel-bg);border:1px solid var(--border-light);border-radius:16px;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);box-shadow:0 10px 30px rgba(0,0,0,.5);flex-wrap:wrap;gap:15px}
+.header-left{display:flex;align-items:center;gap:20px}.active-users-pill{background:rgba(52,211,153,.1);border:1px solid rgba(52,211,153,.3);padding:6px 14px;border-radius:20px;font-size:.8rem;color:#34d399;display:flex;align-items:center;gap:8px}
+.active-dot{width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399}.user-badge{display:flex;align-items:center;gap:12px}
+.avatar-icon{width:40px;height:40px;border-radius:10px;background:rgba(255,255,255,.1);border:1px solid var(--border-light);display:flex;justify-content:center;align-items:center}
+.dashboard-layout{display:grid;grid-template-columns:230px 1fr;gap:20px;align-items:start}.nav-tabs-vertical{display:flex;flex-direction:column;gap:12px}
+.tab-btn{background:var(--panel-bg);border:1px solid var(--border-light);color:var(--white-dim);padding:18px 20px;border-radius:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:12px;transition:.3s;font-size:.95rem;backdrop-filter:blur(15px);text-align:left}
+.tab-btn:hover{color:#fff;border-color:rgba(255,255,255,.4);transform:translateX(3px)}.tab-btn.active{background:rgba(255,255,255,.12);border-color:#fff;color:#fff;box-shadow:0 0 15px rgba(255,255,255,.15)}
+.tab-btn.admin-tab{border-color:rgba(245,158,11,.4);color:#fcd34d}.tab-btn.admin-tab.active{background:rgba(245,158,11,.2);border-color:#f59e0b;color:#fbbf24}
+.workspace-card{background:var(--panel-bg);border:1px solid var(--border-light);border-radius:20px;padding:35px;backdrop-filter:blur(20px);box-shadow:0 20px 40px rgba(0,0,0,.6)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.form-label{display:block;font-size:.85rem;color:var(--white-dim);margin-bottom:8px;font-weight:700}
+.hud-input{width:100%;background:var(--input-bg);border:1px solid var(--border-light);color:#fff;padding:14px 16px;border-radius:10px;font-size:.95rem;outline:none}
+.member-select-section{background:rgba(0,0,0,.25);border:1px solid var(--border-light);border-radius:16px;padding:20px;margin-bottom:20px;text-align:center}
+.member-section-title{font-size:1.1rem;font-weight:800;color:#34d399;margin-bottom:15px;letter-spacing:1px}.member-grid{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.member-tag{background:rgba(255,255,255,.05);border:1.5px solid #10b981;color:#34d399;padding:8px 18px;border-radius:12px;font-size:.9rem;font-weight:700;cursor:pointer;user-select:none;transition:.2s}
+.member-tag:hover{background:rgba(16,185,129,.15);transform:translateY(-2px)}.member-tag.selected{background:#10b981!important;color:#000!important;box-shadow:0 0 12px rgba(16,185,129,.5)}
+.calc-display{background:rgba(0,0,0,.3);border:1px solid var(--border-light);border-radius:12px;padding:20px;margin:20px 0}.calc-line{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;font-size:.95rem}.calc-line:last-child{margin-bottom:0;padding-top:10px;border-top:1px dashed var(--border-light)}
+.val-highlight{font-weight:800;color:#fff;font-size:1.1rem}.summary-table{width:100%;border-collapse:collapse;margin-top:15px;font-size:.9rem}.summary-table th{background:rgba(255,255,255,.08);color:var(--white-dim);padding:12px;text-align:center;border-bottom:1px solid var(--border-light);white-space:nowrap}
+.summary-table td{padding:14px 12px;text-align:center;border-bottom:1px solid rgba(255,255,255,.05);color:#fff}.summary-table tr:hover{background:rgba(255,255,255,.03)}
+.badge-count{display:inline-block;padding:4px 10px;border-radius:8px;font-weight:800;font-size:.85rem}.badge-rp{background:rgba(52,211,153,.15);color:#34d399}.badge-candy{background:rgba(245,158,11,.15);color:#fbbf24}.badge-exchange{background:rgba(96,165,250,.15);color:#60a5fa}.badge-total{background:rgba(255,255,255,.2);color:#fff}.badge-withdraw{background:rgba(248,113,113,.15);color:#f87171}
+.revenue-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;margin-top:15px}.revenue-card{background:rgba(0,0,0,.25);border:1px solid var(--border-light);border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:8px}
+.revenue-card-title{font-size:.85rem;color:var(--white-dim);font-weight:700}.revenue-card-value{font-size:1.25rem;font-weight:800;color:#34d399}.revenue-card-sub{font-size:.75rem;color:var(--white-muted)}
+.custom-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:1000;opacity:0;pointer-events:none;transition:.3s}.custom-modal.active{opacity:1;pointer-events:auto}
+.modal-box{background:#121620;border:1px solid var(--border-light);border-radius:16px;padding:30px;width:400px;max-width:90vw;text-align:center;box-shadow:0 0 30px rgba(0,0,0,.8)}
+.admin-action-group{display:flex;justify-content:center;gap:6px}.admin-action-btn{border:1px solid var(--border-light);background:rgba(255,255,255,.08);color:#fff;padding:6px 10px;border-radius:7px;cursor:pointer;font-size:.75rem}
+.admin-edit-btn{border-color:rgba(96,165,250,.5);color:#60a5fa}.admin-delete-btn{border-color:rgba(248,113,113,.5);color:#f87171}.admin-delete-btn:hover{background:rgba(248,113,113,.15)}
+.edit-form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;text-align:left}.edit-form-grid .full{grid-column:1/-1}
+@media(max-width:768px){.dashboard-layout{grid-template-columns:1fr}.nav-tabs-vertical{flex-direction:row;flex-wrap:wrap}.tab-btn{justify-content:center;flex:1;min-width:140px}.form-grid,.edit-form-grid{grid-template-columns:1fr}.revenue-grid{grid-template-columns:1fr}.workspace-card{padding:22px}.brand-title{font-size:1.8rem}}
+</style>
 </head>
-<body class="syndicate-grid selection:bg-syndicate-crimson selection:text-white">
+<body>
+<canvas id="bgCanvas"></canvas><div class="ambient-glow"></div>
 
-    <div class="scanlines"></div>
+<div class="login-card-wrapper" id="cardWrapper">
+<div class="login-card" id="authBox">
+<div class="brand-title">TAESAN</div><div class="brand-sub">OPERATIONS SYSTEM</div>
+<form onsubmit="handleAuth(event)">
+<div class="input-box"><input type="text" id="authCode" class="white-input" placeholder="OPERATOR ID" required autocomplete="off"><i class="fa-solid fa-user-shield"></i></div>
+<div class="input-box"><input type="password" id="authPin" class="white-input" placeholder="ACCESS PIN" required><i class="fa-solid fa-key"></i></div>
+<button type="submit" class="white-btn">LOGIN <i class="fa-solid fa-arrow-right" style="margin-left:6px"></i></button>
+</form></div></div>
 
-    <header class="fixed top-0 left-0 right-0 z-50 glass-syndicate border-b border-syndicate-gold/20">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-            <!-- Brand Logo -->
-            <a href="#" class="flex items-center space-x-3 group">
-                <div class="w-11 h-11 bg-gradient-to-br from-syndicate-gold via-black to-syndicate-crimson border border-syndicate-gold/60 flex items-center justify-center font-serifKR font-black text-white text-2xl gold-border-glow group-hover:scale-105 transition-transform">
-                    太
+<div id="dashboardBox" class="app-container" style="display:none">
+<div class="top-bar">
+<div class="header-left">
+<div class="brand-title" style="font-size:1.4rem;margin:0;text-align:left">TAESAN</div>
+<div class="active-users-pill"><span class="active-dot"></span><span>접속자: <strong id="currentUserLabel">1</strong>명</span><span style="opacity:.5">|</span><span id="activeUsersList" style="font-size:.75rem;color:var(--white-dim)">접속 중</span></div>
+</div>
+<div class="user-badge"><div class="avatar-icon"><i class="fa-solid fa-user-gear"></i></div><div><div style="font-size:.75rem;color:var(--white-dim)" id="userRankDisplay">RANK</div><div style="font-weight:800" id="userNameDisplay">OPERATOR</div></div>
+<button onclick="handleLogout()" title="로그아웃" style="margin-left:15px;background:none;border:none;color:var(--white-muted);cursor:pointer;font-size:1.1rem"><i class="fa-solid fa-power-off"></i></button></div>
+</div>
+
+<div class="dashboard-layout">
+<div class="nav-tabs-vertical">
+<button class="tab-btn active" id="tabRp" onclick="switchTab('RP')"><i class="fa-solid fa-crosshairs"></i> RP 보고서</button>
+<button class="tab-btn" id="tabTrade" onclick="switchTab('TRADE')"><i class="fa-solid fa-handshake"></i> 판매 보고서</button>
+<button class="tab-btn" id="tabExchange" onclick="switchTab('EXCHANGE')"><i class="fa-solid fa-sack-dollar"></i> 환전 보고서</button>
+<button class="tab-btn" id="tabAttendance" onclick="switchTab('ATTENDANCE')"><i class="fa-solid fa-clock"></i> 출퇴근 관리</button>
+<button class="tab-btn admin-tab" id="tabWeekly" onclick="switchTab('WEEKLY')" style="display:none"><i class="fa-solid fa-crown"></i> 관리자 메뉴 & 매출</button>
+</div>
+
+<div class="workspace-card">
+
+<form id="formRp" onsubmit="sendReport(event,'RP')">
+<h3 style="margin-bottom:20px"><i class="fa-solid fa-shield-halved" style="margin-right:8px"></i> RP 기록</h3>
+<div class="member-select-section"><div class="member-section-title">RP 참여인원</div><div class="member-grid" id="memberGridContainer"></div></div>
+<div style="margin-bottom:16px"><label class="form-label">RP 카테고리</label><select class="hud-input" id="rpKind" required style="color:#fff;background:var(--bg-dark)">
+<option>[전체] 조직 점령전</option><option>[전체] 태산 편의점</option><option>[지상] 젠트리 호텔</option><option>[지상] 지상 미로</option><option>[차량] 차량 남부공항</option><option>[전체] 청부 RP</option></select></div>
+<div class="form-grid">
+<div><label class="form-label">상대 팩션</label><select class="hud-input" id="rpFaction" required style="color:#fff;background:var(--bg-dark)"><option>경찰</option><option>블러드</option><option>흑룡회</option></select></div>
+<div><label class="form-label">결과</label><select class="hud-input" id="rpOutcome" required style="color:#fff;background:var(--bg-dark)"><option>승리</option><option>무승부</option><option>패배</option></select></div>
+</div>
+<div style="margin-top:16px"><label class="form-label">상세 보고 내용</label><textarea class="hud-input" id="rpDetails" rows="4" style="resize:none" placeholder="상세 내용을 입력하세요."></textarea></div>
+<button type="submit" class="white-btn" style="margin-top:20px">보고서 저장</button>
+</form>
+
+<form id="formTrade" onsubmit="sendReport(event,'TRADE')" style="display:none">
+<h3 style="margin-bottom:20px"><i class="fa-solid fa-cart-shopping" style="margin-right:8px"></i> 물품 거래 작성</h3>
+<div class="form-grid"><div><label class="form-label">상대 고유번호 (#)</label><input class="hud-input" id="tradeTargetTag" placeholder="#139" required></div><div><label class="form-label">상대 닉네임</label><input class="hud-input" id="tradeTargetName" placeholder="지니아스" required></div></div>
+<div style="margin-top:16px"><label class="form-label">거래 품목</label><select class="hud-input" id="tradeItem" onchange="onTradeItemChange()" required style="color:#fff;background:var(--bg-dark)"><option value="하트캔디">하트캔디 (판매가 5,000,000 / 비콘 250,000)</option><option value="러쉬캔디">러쉬캔디 (판매가 3,000,000 / 비콘 150,000)</option><option value="기타">기타 거래</option></select></div>
+<div class="form-grid" style="margin-top:16px">
+<div><label class="form-label">수량</label><input type="number" class="hud-input" id="tradeQty" value="1" min="1" oninput="calculateTradeProfit()" required></div>
+<div><label class="form-label">총 판매가 (원)</label><input type="text" class="hud-input" id="tradePrice" placeholder="0" oninput="formatInputValue(this); calculateTradeProfit()" required></div>
+</div>
+<div class="calc-display"><div class="calc-line"><span style="color:var(--white-dim)">총 비용(받을돈):</span><span class="val-highlight" id="displayCustomerPay">0 원</span></div><div class="calc-line"><span>공동계좌 입금액:</span><span class="val-highlight" style="color:#34d399" id="displayAccountDeposit">0 원</span></div></div>
+<div style="margin-bottom:16px"><label class="form-label">비고 메모</label><input class="hud-input" id="tradeNote" placeholder="추가 전달사항 입력"></div>
+<button type="submit" class="white-btn">거래 내역 제출</button>
+</form>
+
+<form id="formExchange" onsubmit="sendReport(event,'EXCHANGE')" style="display:none">
+<h3 style="margin-bottom:20px"><i class="fa-solid fa-calculator" style="margin-right:8px"></i> 환전 신청 및 정산</h3>
+<div class="form-grid"><div><label class="form-label">고객 고유번호 (#)</label><input class="hud-input" id="exchangeTargetTag" placeholder="#5678" required></div><div><label class="form-label">고객 닉네임</label><input class="hud-input" id="exchangeTargetName" placeholder="김태산" required></div></div>
+<div style="margin-top:16px"><label class="form-label">환전 신청 금액 (원)</label><input type="text" class="hud-input" id="exchangeAmount" placeholder="10,000,000" oninput="formatInputValue(this); calculateExchangeFee()" required></div>
+<div class="calc-display"><div class="calc-line"><span style="color:var(--white-dim)">신청 원금:</span><span class="val-highlight" id="displayBaseAmount">0 원</span></div><div class="calc-line"><span style="color:var(--white-dim)">수수료 (10%):</span><span class="val-highlight" style="color:#f87171" id="displayFeeAmount">0 원</span></div><div class="calc-line"><span>실제 지급 정산액:</span><span class="val-highlight" style="color:#34d399" id="displayNetAmount">0 원</span></div></div>
+<div style="margin-bottom:16px"><label class="form-label">전달사항 메모</label><input class="hud-input" id="exchangeNote" placeholder="환전 메모 작성"></div>
+<button type="submit" class="white-btn">환전 정산 완료</button>
+</form>
+
+<div id="formAttendance" style="display:none">
+<h3 style="margin-bottom:20px"><i class="fa-solid fa-clock" style="margin-right:8px"></i> 출퇴근 관리</h3>
+<div style="background:rgba(0,0,0,0.3);border:1px solid var(--border-light);border-radius:16px;padding:25px;text-align:center;margin-bottom:20px">
+<div style="font-size:.9rem;color:var(--white-dim);margin-bottom:8px">오늘 누적 출근 시간</div>
+<div id="todayWorkTimeDisplay" style="font-size:2rem;font-weight:900;color:#34d399;margin-bottom:20px">0시간 0분</div>
+<div style="font-size:.85rem;color:var(--white-muted);margin-bottom:20px" id="attendanceStatusText">현재 상태: 퇴근 중</div>
+<div style="display:flex;gap:12px;justify-content:center">
+<button type="button" class="white-btn" style="background:#10b981;color:#fff;margin:0" onclick="clockIn()"><i class="fa-solid fa-right-to-bracket"></i> 출근하기</button>
+<button type="button" class="white-btn" style="background:#f87171;color:#fff;margin:0" onclick="clockOut()"><i class="fa-solid fa-right-from-bracket"></i> 퇴근하기</button>
+</div></div>
+</div>
+
+<div id="weeklySummaryArea" style="display:none">
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;gap:10px"><h3 style="font-size:1.1rem;color:#fbbf24"><i class="fa-solid fa-crown"></i> 주간 인원별 활동 집계표</h3><button onclick="loadWeeklySummaryData()" class="white-btn" style="width:auto;padding:8px 16px;margin:0;font-size:.8rem;background:rgba(245,158,11,.2);color:#fbbf24;border:1px solid #f59e0b"><i class="fa-solid fa-rotate-right"></i> 새로고침</button></div>
+<div style="overflow-x:auto;margin-bottom:30px"><table class="summary-table"><thead><tr><th>이름 (고유번호)</th><th>RP 참여/작성</th><th>캔디 판매</th><th>환전 신청</th><th>총 건수</th></tr></thead><tbody id="weeklyTableBody"></tbody></table></div>
+
+<!-- 관리자 전용 공동계좌 출금 섹션 -->
+<div style="border-top:1px dashed var(--border-light);padding-top:25px;margin-bottom:30px">
+<h3 style="font-size:1.1rem;color:#f87171;margin-bottom:15px"><i class="fa-solid fa-wallet"></i> 공동계좌 출금 신청 (관리자)</h3>
+<form onsubmit="sendWithdrawalReport(event)">
+<div class="form-grid">
+<div><label class="form-label">출금 금액 (원)</label><input type="text" class="hud-input" id="withdrawAmount" placeholder="1,000,000" oninput="formatInputValue(this)" required></div>
+<div><label class="form-label">출금 사유 / 메모</label><input class="hud-input" id="withdrawReason" placeholder="조직 자금 인출" required></div>
+</div>
+<button type="submit" class="white-btn" style="background:#f87171;color:#fff;margin-top:15px"><i class="fa-solid fa-minus-circle"></i> 출금 실행 (매출 차감)</button>
+</form>
+</div>
+
+<!-- 출퇴근 전체 기록 (관리자용 - 삭제/수정 권한 포함) -->
+<div style="border-top:1px dashed var(--border-light);padding-top:25px;margin-bottom:30px">
+<h3 style="font-size:1.1rem;color:#34d399;margin-bottom:10px"><i class="fa-solid fa-user-clock"></i> 팀원 출퇴근 전체 기록 (오늘)</h3>
+<div style="overflow-x:auto"><table class="summary-table"><thead><tr><th>이름</th><th>출근 시간</th><th>퇴근 시간</th><th>근무 시간</th><th>관리</th></tr></thead><tbody id="adminAttendanceBody"></tbody></table></div>
+</div>
+
+<div style="border-top:1px dashed var(--border-light);padding-top:25px;margin-bottom:30px">
+<h3 style="font-size:1.1rem;color:#fbbf24;margin-bottom:10px"><i class="fa-solid fa-database"></i> 전체 기록 관리</h3>
+<div style="overflow-x:auto"><table class="summary-table"><thead><tr><th>일시</th><th>구분</th><th>작성자</th><th>내용</th><th>관리</th></tr></thead><tbody id="adminRecordsBody"></tbody></table></div>
+</div>
+
+<div style="border-top:1px dashed var(--border-light);padding-top:25px">
+<h3 style="font-size:1.1rem;color:#34d399;margin-bottom:10px"><i class="fa-solid fa-chart-line"></i> 주간 매출 계산표 (관리자)</h3>
+<p style="font-size:.8rem;color:var(--white-muted);margin-bottom:15px">* 총 매출에서 공동계좌 출금액이 자동 차감되어 최종 계산됩니다.</p>
+<div class="revenue-grid">
+<div class="revenue-card"><div class="revenue-card-title"><i class="fa-solid fa-candy-cane" style="color:#fbbf24"></i> 하트캔디 입금액</div><div class="revenue-card-value" id="revHeartCandy">0 원</div><div class="revenue-card-sub" id="revHeartCandySub">판매 0개</div></div>
+<div class="revenue-card"><div class="revenue-card-title"><i class="fa-solid fa-candy-cane" style="color:#f59e0b"></i> 러쉬캔디 입금액</div><div class="revenue-card-value" id="revRushCandy">0 원</div><div class="revenue-card-sub" id="revRushCandySub">판매 0개</div></div>
+<div class="revenue-card"><div class="revenue-card-title"><i class="fa-solid fa-sack-dollar" style="color:#60a5fa"></i> 검은돈 환전 수익 (40%)</div><div class="revenue-card-value" id="revBlackMoney">0 원</div><div class="revenue-card-sub" id="revBlackMoneySub">신청 총액: 0 원</div></div>
+<div class="revenue-card"><div class="revenue-card-title" style="color:#f87171"><i class="fa-solid fa-wallet"></i> 공동계좌 총 출금액</div><div class="revenue-card-value" style="color:#f87171" id="revWithdrawal">0 원</div><div class="revenue-card-sub">출금 차감 내역</div></div>
+<div class="revenue-card" style="grid-column:1/-1;background:rgba(16,185,129,.1);border-color:#10b981"><div class="revenue-card-title" style="color:#34d399"><i class="fa-solid fa-coins"></i> 주간 최종 순매출 합계</div><div class="revenue-card-value" style="color:#fff;font-size:1.4rem" id="revTotal">0 원</div><div class="revenue-card-sub">총 수익 - 공동계좌 출금액</div></div>
+</div></div>
+</div>
+
+</div></div></div>
+
+<div id="customModal" class="custom-modal"><div class="modal-box"><div id="modalTitle" style="font-family:'Cinzel',serif;font-weight:800;font-size:1.1rem;margin-bottom:10px">SYSTEM</div><div id="modalDesc" style="color:var(--white-dim);font-size:.9rem;margin-bottom:20px;white-space:pre-line">MESSAGE</div><button onclick="closeModal()" class="white-btn" style="margin-top:0;padding:10px;font-size:.85rem">확인</button></div></div>
+
+<div id="editModal" class="custom-modal">
+<div class="modal-box" style="text-align:left;width:520px">
+<h3 style="margin-bottom:18px;color:#60a5fa"><i class="fa-solid fa-pen"></i> 기록 수정</h3>
+<div id="editModalBody"></div>
+<div style="display:flex;gap:10px;margin-top:18px">
+<button onclick="closeEditModal()" class="white-btn" style="margin:0;background:rgba(255,255,255,.1);color:#fff">취소</button>
+<button onclick="submitEditRecord()" class="white-btn" style="margin:0">저장</button>
+</div></div></div>
+
+<script>
+const canvas=document.getElementById('bgCanvas'),ctx=canvas.getContext('2d');
+function resizeCanvas(){canvas.width=innerWidth;canvas.height=innerHeight}resizeCanvas();addEventListener('resize',resizeCanvas);
+const particles=[];for(let i=0;i<50;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,radius:Math.random()*1.5+.5,dx:(Math.random()-.5)*.4,dy:(Math.random()-.5)*.4,alpha:Math.random()*.5+.2});
+function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${p.alpha})`;ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>canvas.width)p.dx*=-1;if(p.y<0||p.y>canvas.height)p.dy*=-1});requestAnimationFrame(animateParticles)}animateParticles();
+
+const GOOGLE_SHEET_API_URL="https://script.google.com/macros/s/AKfycbxxZDyhYlhateBk_W0K1smkNjZGUw3u_IkD--WT0-Kj3fkPywQlsNVZ5gLNHkxqn1K8/exec";
+const MEMBER_LIST=["지니아스(139)","이대발(1923)","태석(222)","희승(2002)","성훈(1504)","호놀(7)","김억지(15)","왕조아 (1974)","애호박(733)","흑자(689)"];
+const ALLOWED_USERS={"지니아스":{pin:"1234",rank:"두목"},"태산":{pin:"5678",rank:"부두목"}};
+const CANDY_RULES={"하트캔디":{unitPrice:5000000,beaconFeePerUnit:250000},"러쉬캔디":{unitPrice:3000000,beaconFeePerUnit:150000}};
+let localReports=[],activeUser=null,selectedMembers=new Set(),currentEditRecord=null;
+let attendanceRecords=JSON.parse(localStorage.getItem('taesan_attendance')||'[]');
+let currentClockInTime=localStorage.getItem('taesan_clock_in')?new Date(localStorage.getItem('taesan_clock_in')):null;
+
+// 숫자 콤마 자동 포맷 함수
+function formatInputValue(input){
+    let val=input.value.replace(/[^0-9]/g,'');
+    if(val){
+        input.value=Number(val).toLocaleString('ko-KR');
+    }else{
+        input.value='';
+    }
+}
+function parseCleanNumber(val){
+    if(!val) return 0;
+    return parseFloat(String(val).replace(/,/g,''))||0;
+}
+
+function showAlert(title,message){document.getElementById('modalTitle').innerText=title;document.getElementById('modalDesc').innerText=message;document.getElementById('customModal').classList.add('active')}
+function closeModal(){document.getElementById('customModal').classList.remove('active')}
+function closeEditModal(){document.getElementById('editModal').classList.remove('active');currentEditRecord=null;}
+function isAdmin(){return activeUser&&(activeUser.rank==="두목"||activeUser.rank==="부두목")}
+function renderMemberTags(){const c=document.getElementById('memberGridContainer');c.innerHTML='';MEMBER_LIST.forEach(name=>{const t=document.createElement('div');t.className='member-tag'+(selectedMembers.has(name)?' selected':'');t.innerText=name;t.onclick=()=>{selectedMembers.has(name)?(selectedMembers.delete(name),t.classList.remove('selected')):(selectedMembers.add(name),t.classList.add('selected'))};c.appendChild(t)})}
+
+function handleAuth(e){
+    e.preventDefault();
+    const id=document.getElementById('authCode').value.trim();
+    const pin=document.getElementById('authPin').value.trim();
+    const u=ALLOWED_USERS[id];
+    if(u&&u.pin===pin){
+        activeUser={name:id,rank:u.rank};
+        userRankDisplay.innerText=u.rank;
+        userNameDisplay.innerText=id;
+        currentUserLabel.innerText="1";
+        activeUsersList.innerText=id;
+        tabWeekly.style.display=isAdmin()?'flex':'none';
+        renderMemberTags();
+        cardWrapper.style.display='none';
+        dashboardBox.style.display='flex';
+        onTradeItemChange();
+        updateAttendanceDisplay();
+    }else{showAlert("AUTH FAILED","ID 또는 PIN 번호가 올바르지 않습니다.\n(관리자 ID: 지니아스 / 태산)");}
+}
+function handleLogout(){activeUser=null;selectedMembers.clear();authCode.value='';authPin.value='';cardWrapper.style.display='block';dashboardBox.style.display='none'}
+
+function switchTab(type){
+    [tabRp,tabTrade,tabExchange,tabAttendance,tabWeekly].forEach(t=>t.classList.remove('active'));
+    formRp.style.display=formTrade.style.display=formExchange.style.display=formAttendance.style.display=weeklySummaryArea.style.display='none';
+    if(type==='RP'){tabRp.classList.add('active');formRp.style.display='block'}
+    else if(type==='TRADE'){tabTrade.classList.add('active');formTrade.style.display='block'}
+    else if(type==='EXCHANGE'){tabExchange.classList.add('active');formExchange.style.display='block'}
+    else if(type==='ATTENDANCE'){tabAttendance.classList.add('active');formAttendance.style.display='block';updateAttendanceDisplay()}
+    else if(type==='WEEKLY'){
+        if(!isAdmin()){showAlert("ACCESS DENIED","관리자 권한이 없습니다.");return}
+        tabWeekly.classList.add('active');
+        weeklySummaryArea.style.display='block';
+        loadWeeklySummaryData();
+    }
+}
+
+function onTradeItemChange(){
+    const item=tradeItem.value;
+    if(CANDY_RULES[item]){
+        tradePrice.disabled=true;
+        let total=CANDY_RULES[item].unitPrice*(parseInt(tradeQty.value)||1);
+        tradePrice.value=total.toLocaleString('ko-KR');
+    }else{
+        tradePrice.disabled=false;
+        tradePrice.value='';
+    }
+    calculateTradeProfit();
+}
+function calculateTradeProfit(){
+    const item=tradeItem.value,qty=Math.max(1,parseInt(tradeQty.value)||1);
+    let total=0,fee=0;
+    if(CANDY_RULES[item]){
+        total=CANDY_RULES[item].unitPrice*qty;
+        fee=CANDY_RULES[item].beaconFeePerUnit*qty;
+        tradePrice.value=total.toLocaleString('ko-KR');
+    }else{
+        total=parseCleanNumber(tradePrice.value);
+    }
+    displayCustomerPay.innerText=total.toLocaleString('ko-KR')+" 원";
+    displayAccountDeposit.innerText=(total-fee).toLocaleString('ko-KR')+" 원";
+}
+function calculateExchangeFee(){
+    const a=Math.floor(parseCleanNumber(exchangeAmount.value)),f=Math.floor(a*.1);
+    displayBaseAmount.innerText=a.toLocaleString('ko-KR')+" 원";
+    displayFeeAmount.innerText=f.toLocaleString('ko-KR')+" 원";
+    displayNetAmount.innerText=(a-f).toLocaleString('ko-KR')+" 원";
+}
+
+/* 출퇴근 로직 */
+function clockIn(){
+    if(currentClockInTime){showAlert("알림","이미 출근 상태입니다.");return;}
+    currentClockInTime=new Date();
+    localStorage.setItem('taesan_clock_in',currentClockInTime.toISOString());
+    updateAttendanceDisplay();
+    showAlert("출근 완료","성공적으로 출근 처리되었습니다.");
+}
+function clockOut(){
+    if(!currentClockInTime){showAlert("알림","출근 기록이 없습니다.");return;}
+    const clockOutTime=new Date();
+    const diffMs=clockOutTime-currentClockInTime;
+    const diffMins=Math.floor(diffMs/(1000*60));
+    
+    const record={
+        id:Date.now(),
+        name:activeUser.name,
+        date:new Date().toLocaleDateString('ko-KR'),
+        inTime:currentClockInTime.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}),
+        outTime:clockOutTime.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}),
+        minutes:diffMins
+    };
+    attendanceRecords.push(record);
+    localStorage.setItem('taesan_attendance',JSON.stringify(attendanceRecords));
+    
+    localStorage.removeItem('taesan_clock_in');
+    currentClockInTime=null;
+    updateAttendanceDisplay();
+    showAlert("퇴근 완료",`총 근무 시간: ${Math.floor(diffMins/60)}시간 ${diffMins%60}분 기록되었습니다.`);
+}
+function updateAttendanceDisplay(){
+    let todayMins=0;
+    const todayStr=new Date().toLocaleDateString('ko-KR');
+    attendanceRecords.forEach(r=>{if(r.date===todayStr&&r.name===activeUser?.name)todayMins+=r.minutes;});
+    
+    if(currentClockInTime){
+        const liveMins=Math.floor((new Date()-currentClockInTime)/(1000*60));
+        todayMins+=liveMins;
+        attendanceStatusText.innerHTML='현재 상태: <strong style="color:#34d399">근무 중</strong> (출근 시각: '+currentClockInTime.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})+')';
+    }else{
+        attendanceStatusText.innerHTML='현재 상태: <span style="color:var(--white-muted)">퇴근 상태</span>';
+    }
+    const h=Math.floor(todayMins/60),m=todayMins%60;
+    todayWorkTimeDisplay.innerText=`${h}시간 ${m}분`;
+}
+
+function sendReport(e,type){
+    e.preventDefault();
+    let d={reportType:type,authorRank:activeUser?.rank||'미정',authorName:activeUser?.name||'미인증',timestamp:new Date().toISOString()};
+    if(type==='RP'){
+        if(!selectedMembers.size){showAlert("CHECK REQUIRED","RP 참여인원을 최소 1명 이상 선택해 주세요.");return}
+        d.participants=[...selectedMembers].join(', ');d.rpCategory=rpKind.value;d.targetFaction=rpFaction.value;d.rpResult=rpOutcome.value;d.details=rpDetails.value;
+    }else if(type==='TRADE'){
+        const item=tradeItem.value,q=parseInt(tradeQty.value)||1;
+        let total=parseCleanNumber(tradePrice.value),fee=0;
+        if(CANDY_RULES[item]){total=CANDY_RULES[item].unitPrice*q;fee=CANDY_RULES[item].beaconFeePerUnit*q;}
+        d.targetTag=tradeTargetTag.value;d.targetName=tradeTargetName.value;d.tradeItem=item;d.quantity=q;d.totalPrice=total;d.accountDeposit=total-fee;d.note=tradeNote.value;
+    }else{
+        const a=Math.floor(parseCleanNumber(exchangeAmount.value)),f=Math.floor(a*.1);
+        d.targetTag=exchangeTargetTag.value;d.targetName=exchangeTargetName.value;d.exchangeAmount=a;d.feeAmount=f;d.netAmount=a-f;d.note=exchangeNote.value;
+    }
+    localReports.push(d);
+    fetch(GOOGLE_SHEET_API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(()=>{showAlert("SUCCESS","보고서가 성공적으로 저장되었습니다.");resetForms(type)}).catch(()=>{showAlert("SAVED LOCALLY","시트 연동 실패로 로컬 메모리에 저장되었습니다.");resetForms(type)})
+}
+
+function sendWithdrawalReport(e){
+    e.preventDefault();
+    if(!isAdmin()){showAlert("ACCESS DENIED","관리자만 출금할 수 있습니다.");return;}
+    const amount=parseCleanNumber(withdrawAmount.value);
+    const reason=withdrawReason.value;
+    if(amount<=0)return;
+
+    let d={reportType:'WITHDRAWAL',authorRank:activeUser.rank,authorName:activeUser.name,timestamp:new Date().toISOString(),withdrawAmount:amount,note:reason};
+    localReports.push(d);
+    fetch(GOOGLE_SHEET_API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}).then(()=>{
+        showAlert("SUCCESS","공동계좌 출금 및 매출 차감 완료되었습니다.");
+        withdrawAmount.value='';withdrawReason.value='';loadWeeklySummaryData();
+    }).catch(()=>{
+        showAlert("SAVED LOCALLY","로컬에 출금 내역이 반영되었습니다.");
+        withdrawAmount.value='';withdrawReason.value='';loadWeeklySummaryData();
+    });
+}
+
+function resetForms(type){
+    if(type==='RP'){selectedMembers.clear();renderMemberTags();rpDetails.value='';}
+    else if(type==='TRADE'){tradeTargetTag.value='';tradeTargetName.value='';tradeQty.value='1';tradeNote.value='';onTradeItemChange();}
+    else{exchangeTargetTag.value='';exchangeTargetName.value='';exchangeAmount.value='';exchangeNote.value='';calculateExchangeFee();}
+}
+
+function loadWeeklySummaryData(){
+    weeklyTableBody.innerHTML='<tr><td colspan="5" style="color:var(--white-muted)">데이터를 불러오는 중입니다...</td></tr>';
+    fetch(GOOGLE_SHEET_API_URL).then(r=>r.json()).then(data=>{processWeeklySummary(data);renderAdminRecords(data);renderAdminAttendance(data)}).catch(()=>{processWeeklySummary(localReports);renderAdminRecords(localReports);renderAdminAttendance(localReports)});
+}
+
+function processWeeklySummary(reports){
+    const counts={};MEMBER_LIST.forEach(m=>counts[m]={rp:0,candy:0,exchange:0});
+    let hq=0,hd=0,rq=0,rd=0,bm=0,totalWithdraw=0;
+    
+    (reports||[]).forEach(r=>{
+        if(r.reportType==='RP'&&r.participants)(r.participants+'').split(',').map(s=>s.trim()).forEach(p=>{if(counts[p])counts[p].rp++});
+        else if(r.reportType==='TRADE'){
+            const q=parseInt(r.quantity)||1;
+            if(counts[r.authorName]&&r.tradeItem&&r.tradeItem.includes('캔디'))counts[r.authorName].candy+=q;
+            if(r.tradeItem==='하트캔디'){hq+=q;hd+=parseCleanNumber(r.accountDeposit)||CANDY_RULES['하트캔디'].unitPrice*q-CANDY_RULES['하트캔디'].beaconFeePerUnit*q}
+            else if(r.tradeItem==='러쉬캔디'){rq+=q;rd+=parseCleanNumber(r.accountDeposit)||CANDY_RULES['러쉬캔디'].unitPrice*q-CANDY_RULES['러쉬캔디'].beaconFeePerUnit*q}
+            else{hd+=parseCleanNumber(r.accountDeposit);}
+        }else if(r.reportType==='EXCHANGE'){
+            if(counts[r.authorName])counts[r.authorName].exchange++;
+            bm+=parseCleanNumber(r.exchangeAmount);
+        }else if(r.reportType==='WITHDRAWAL'){
+            totalWithdraw+=parseCleanNumber(r.withdrawAmount);
+        }
+    });
+    
+    weeklyTableBody.innerHTML='';
+    MEMBER_LIST.forEach(m=>{
+        const c=counts[m],t=c.rp+c.candy+c.exchange;
+        weeklyTableBody.innerHTML+=`<tr><td style="font-weight:700">${escapeHtml(m)}</td><td><span class="badge-count badge-rp">${c.rp} 회</span></td><td><span class="badge-count badge-candy">${c.candy} 개</span></td><td><span class="badge-count badge-exchange">${c.exchange} 건</span></td><td><span class="badge-count badge-total">${t} 건</span></td></tr>`;
+    });
+    
+    const profit=Math.floor(bm*.4), grossTotal=hd+rd+profit;
+    const finalNetTotal=grossTotal-totalWithdraw;
+
+    revHeartCandy.innerText=hd.toLocaleString('ko-KR')+" 원";
+    revHeartCandySub.innerText=`판매 ${hq}개 (입금액 합산)`;
+    revRushCandy.innerText=rd.toLocaleString('ko-KR')+" 원";
+    revRushCandySub.innerText=`판매 ${rq}개 (입금액 합산)`;
+    revBlackMoney.innerText=profit.toLocaleString('ko-KR')+" 원";
+    revBlackMoneySub.innerText=`신청 총액: ${bm.toLocaleString('ko-KR')} 원 (40% 산출)`;
+    revWithdrawal.innerText=totalWithdraw.toLocaleString('ko-KR')+" 원";
+    revTotal.innerText=finalNetTotal.toLocaleString('ko-KR')+" 원";
+}
+
+// 관리자 출퇴근 기록 렌더링 (삭제/수정 버튼 추가)
+function renderAdminAttendance(reports){
+    adminAttendanceBody.innerHTML='';
+    const todayStr=new Date().toLocaleDateString('ko-KR');
+    const combinedAtt=[...attendanceRecords];
+    if(!combinedAtt.length){adminAttendanceBody.innerHTML='<tr><td colspan="5" style="color:var(--white-muted)">오늘 출근 기록이 없습니다.</td></tr>';return;}
+    
+    combinedAtt.filter(a=>a.date===todayStr).forEach((a, idx)=>{
+        const h=Math.floor(a.minutes/60), m=a.minutes%60;
+        adminAttendanceBody.innerHTML+=`<tr>
+            <td style="font-weight:700">${escapeHtml(a.name)}</td>
+            <td>${a.inTime}</td>
+            <td>${a.outTime}</td>
+            <td><span class="badge-count badge-rp">${h}시간 ${m}분</span></td>
+            <td>
+                <div class="admin-action-group">
+                    <button class="admin-action-btn admin-edit-btn" onclick='openEditAttendance(${JSON.stringify(a).replace(/'/g,"&#39;")})'><i class="fa-solid fa-pen"></i> 수정</button>
+                    <button class="admin-action-btn admin-delete-btn" onclick="deleteAttendance(${a.id || idx})"><i class="fa-solid fa-trash"></i> 삭제</button>
                 </div>
-                <div class="flex flex-col">
-                    <span class="font-cinzel font-black text-2xl tracking-widest text-white group-hover:text-syndicate-gold transition-colors">TAESAN</span>
-                    <span class="text-[10px] font-mono tracking-widest text-syndicate-gold/80 uppercase -mt-1">태산 파벌 SYNDICATE</span>
-                </div>
-            </a>
+            </td>
+        </tr>`;
+    });
+}
 
-            <!-- Desktop Nav Links -->
-            <nav class="hidden lg:flex items-center space-x-8 font-mono text-xs tracking-widest uppercase">
-                <a href="#about" class="text-gray-300 hover:text-syndicate-gold transition-colors">ABOUT</a>
-                <a href="#business" class="text-gray-300 hover:text-syndicate-gold transition-colors">사업권</a>
-                <a href="#exchange" class="text-gray-300 hover:text-syndicate-gold transition-colors">환전&시세</a>
-                <a href="#crew" class="text-gray-300 hover:text-syndicate-gold transition-colors">조직도</a>
-                <a href="#rules" class="text-gray-300 hover:text-syndicate-gold transition-colors">수칙</a>
-            </nav>
+function deleteAttendance(targetId){
+    if(!isAdmin()){showAlert("ACCESS DENIED","관리자만 삭제할 수 있습니다.");return;}
+    if(confirm("정말 이 출퇴근 기록을 삭제하시겠습니까?")){
+        attendanceRecords=attendanceRecords.filter(a=>(a.id!==targetId));
+        localStorage.setItem('taesan_attendance',JSON.stringify(attendanceRecords));
+        renderAdminAttendance();
+        showAlert("DELETED","출퇴근 기록이 삭제되었습니다.");
+    }
+}
 
-            <!-- Action Buttons & Login Portal Toggle -->
-            <div class="flex items-center space-x-3">
-                <button onclick="toggleAudio()" id="bgmBtn" class="p-2.5 bg-black/60 border border-white/10 text-gray-400 hover:text-syndicate-gold transition-colors text-xs font-mono flex items-center gap-1.5" title="BGM Toggle">
-                    <i class="fa-solid fa-volume-xmark" id="bgmIcon"></i>
-                    <span class="hidden sm:inline text-[10px]">BGM</span>
-                </button>
-                
-                <button onclick="openModal('recruit')" class="hidden sm:inline-flex items-center px-4 py-2 bg-gradient-to-r from-syndicate-crimson to-black border border-syndicate-blood text-white font-orbitron font-bold text-xs uppercase hover:brightness-125 transition-all shadow-lg shadow-syndicate-crimson/20">
-                    <i class="fa-solid fa-user-shield mr-2 text-syndicate-gold"></i> 입단 지원
-                </button>
-
-                <button onclick="openAuthModal()" class="inline-flex items-center px-4 py-2 bg-syndicate-gold text-black font-orbitron font-extrabold text-xs uppercase hover:bg-syndicate-goldBright transition-all shadow-lg shadow-syndicate-gold/20">
-                    <i class="fa-solid fa-key mr-2"></i> 조직원 인증
-                </button>
-
-                <button id="mobileBtn" class="lg:hidden text-syndicate-gold text-xl p-2">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-            </div>
+function openEditAttendance(record){
+    if(!isAdmin()){showAlert("ACCESS DENIED","관리자만 수정할 수 있습니다.");return;}
+    currentEditRecord=record;
+    const body=document.getElementById('editModalBody');
+    body.innerHTML=`
+        <div class="edit-form-grid">
+            <div><label class="form-label">이름</label><input class="hud-input" id="editAttName" value="${record.name}"></div>
+            <div><label class="form-label">날짜</label><input class="hud-input" id="editAttDate" value="${record.date}"></div>
+            <div><label class="form-label">출근 시간 (예: 14:00)</label><input class="hud-input" id="editAttIn" value="${record.inTime}"></div>
+            <div><label class="form-label">퇴근 시간 (예: 18:30)</label><input class="hud-input" id="editAttOut" value="${record.outTime}"></div>
+            <div class="full"><label class="form-label">근무 분 (분 단위)</label><input type="number" class="hud-input" id="editAttMins" value="${record.minutes}"></div>
         </div>
+    `;
+    document.getElementById('editModal').classList.add('active');
+}
 
-        <!-- Mobile Navigation Drawer -->
-        <div id="mobileMenu" class="hidden lg:hidden border-t border-syndicate-gold/20 glass-syndicate px-6 py-6 space-y-4 font-mono text-sm">
-            <a href="#about" class="m-link block text-gray-300 hover:text-syndicate-gold">ABOUT</a>
-            <a href="#business" class="m-link block text-gray-300 hover:text-syndicate-gold">사업권 (Core Business)</a>
-            <a href="#exchange" class="m-link block text-gray-300 hover:text-syndicate-gold">환전율 & Candy 시세</a>
-            <a href="#crew" class="m-link block text-gray-300 hover:text-syndicate-gold">조직 서열 (Hierarchy)</a>
-            <a href="#rules" class="m-link block text-gray-300 hover:text-syndicate-gold">조직 수칙 & 규율</a>
-            <div class="pt-2 grid grid-cols-2 gap-2">
-                <button onclick="openModal('recruit')" class="py-2.5 bg-syndicate-crimson text-white font-orbitron font-bold text-xs uppercase">입단 지원</button>
-                <button onclick="openAuthModal()" class="py-2.5 bg-syndicate-gold text-black font-orbitron font-bold text-xs uppercase">조직원 인증</button>
-            </div>
-        </div>
-    </header>
-
-    <section class="relative pt-36 pb-24 md:pt-48 md:pb-32 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-syndicate-crimson/10 via-transparent to-syndicate-black pointer-events-none"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            
-            <div class="inline-flex items-center space-x-3 px-4 py-1.5 bg-black/80 border border-syndicate-gold/40 rounded-full mb-8">
-                <span class="w-2.5 h-2.5 rounded-full bg-syndicate-crimson animate-pulse-fast"></span>
-                <span class="text-xs font-mono text-syndicate-gold tracking-widest uppercase">TAESAN FACTION - HIGH SECURITY CLEARANCE LEVEL 5</span>
-            </div>
-
-            <h1 class="text-4xl sm:text-6xl lg:text-7xl font-serifKR font-black tracking-tight leading-tight mb-6">
-                <span class="block text-gray-400 text-lg sm:text-2xl font-mono tracking-widest mb-2">어둠 속에서 도시를 움직인다</span>
-                <span class="gold-text-shimmer">태산 (TAESAN)</span>
-            </h1>
-
-            <p class="max-w-3xl mx-auto text-base sm:text-lg text-gray-400 mb-10 leading-relaxed font-light">
-                우리는 암지의 규칙을 정의합니다. <br class="hidden sm:inline"/>
-                <strong class="text-syndicate-gold">검은돈 세탁·환전</strong>부터 최상의 선도를 자랑하는 <strong class="text-syndicate-crimson">하트캔디 & 러쉬캔디</strong> 독점 유통망까지.<br/>
-                압도적인 파쇄력과 자본력으로 음지 시장의 정점을 유지합니다.
-            </p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <button onclick="openModal('trade')" class="w-full sm:w-auto px-9 py-4 bg-syndicate-gold text-black font-orbitron font-black text-sm tracking-wider uppercase hover:bg-syndicate-goldBright shadow-xl shadow-syndicate-gold/20 flex items-center justify-center">
-                    <i class="fa-solid fa-coins mr-3 text-lg"></i> 신속 거래 및 환전 신청
-                </button>
-                <button onclick="openModal('recruit')" class="w-full sm:w-auto px-9 py-4 bg-black/80 border border-syndicate-crimson/80 text-white font-orbitron font-bold text-sm tracking-wider uppercase hover:bg-syndicate-crimson/40 transition-all flex items-center justify-center">
-                    <i class="fa-solid fa-shield-halved mr-3 text-syndicate-crimson"></i> 신규 조직원 입단 지원
-                </button>
-            </div>
-
-            <!-- Ticker Dashboard Metrics -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mt-20 text-left">
-                <div class="card-syndicate p-5 border-l-2 border-l-syndicate-gold">
-                    <div class="text-[10px] font-mono text-syndicate-muted uppercase">EXCHANGE RATE</div>
-                    <div class="font-orbitron font-bold text-xl text-syndicate-gold mt-1">92.5% CLEAR</div>
-                    <div class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-lock text-syndicate-gold mr-1"></i> 익명 추적 불가 수수료율</div>
-                </div>
-                <div class="card-syndicate p-5 border-l-2 border-l-syndicate-crimson">
-                    <div class="text-[10px] font-mono text-syndicate-muted uppercase">HEART CANDY STOCK</div>
-                    <div class="font-orbitron font-bold text-xl text-syndicate-crimson mt-1">10,000+ EA</div>
-                    <div class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-capsules text-syndicate-crimson mr-1"></i> 당일 대량 배송 지원</div>
-                </div>
-                <div class="card-syndicate p-5 border-l-2 border-l-syndicate-cyan">
-                    <div class="text-[10px] font-mono text-syndicate-muted uppercase">RUSH CANDY PURITY</div>
-                    <div class="font-orbitron font-bold text-xl text-syndicate-cyan mt-1">99.9% GRADE</div>
-                    <div class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-bolt text-syndicate-cyan mr-1"></i> 최고급 고순도 라인</div>
-                </div>
-                <div class="card-syndicate p-5 border-l-2 border-l-purple-500">
-                    <div class="text-[10px] font-mono text-syndicate-muted uppercase">ENFORCERS READY</div>
-                    <div class="font-orbitron font-bold text-xl text-purple-400 mt-1">24시간 대기</div>
-                    <div class="text-xs text-gray-400 mt-1"><i class="fa-solid fa-user-ninja text-purple-400 mr-1"></i> 거래 현장 안전 호위</div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Marquee Ticker Banner -->
-    <div class="w-full bg-black border-y border-syndicate-gold/20 py-3 overflow-hidden relative">
-        <div class="flex whitespace-nowrap animate-marquee space-x-12 font-mono text-xs tracking-widest text-syndicate-gold/80 uppercase">
-            <span><i class="fa-solid fa-skull mr-2 text-syndicate-crimson"></i> TAESAN SYNDICATE</span>
-            <span><i class="fa-solid fa-money-bill-transfer mr-2 text-syndicate-gold"></i> BLACK MONEY LAUNDERING 24/7 ACTIVE</span>
-            <span><i class="fa-solid fa-heart-pulse mr-2 text-syndicate-crimson"></i> PREMIUM HEART CANDY BULK SUPPLY</span>
-            <span><i class="fa-solid fa-bolt mr-2 text-syndicate-cyan"></i> RUSH CANDY ULTRA HIGH PURITY</span>
-            <span><i class="fa-solid fa-skull mr-2 text-syndicate-crimson"></i> TAESAN SYNDICATE</span>
-            <span><i class="fa-solid fa-money-bill-transfer mr-2 text-syndicate-gold"></i> BLACK MONEY LAUNDERING 24/7 ACTIVE</span>
-        </div>
-    </div>
-
-    <section id="business" class="py-28 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-20">
-                <span class="text-xs font-mono font-extrabold tracking-widest text-syndicate-gold uppercase">CORE BUSINESS</span>
-                <h2 class="text-3xl sm:text-5xl font-serifKR font-bold text-white mt-2">태산 핵심 독점 사업권</h2>
-                <div class="w-16 h-1 bg-gradient-to-r from-syndicate-gold to-syndicate-crimson mx-auto mt-4"></div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Business 1: 검은돈 환전 -->
-                <div class="card-syndicate p-8 rounded-none relative border-t-2 border-t-syndicate-gold group">
-                    <div class="absolute top-4 right-4 text-xs font-mono text-syndicate-gold/40">BUSINESS #01</div>
-                    <div class="w-16 h-16 bg-syndicate-gold/10 border border-syndicate-gold/30 flex items-center justify-center text-syndicate-gold text-3xl mb-6 group-hover:bg-syndicate-gold group-hover:text-black transition-all">
-                        <i class="fa-solid fa-money-bill-transfer"></i>
-                    </div>
-                    <h3 class="text-2xl font-serifKR font-bold text-white mb-3">검은돈 세탁 & 환전</h3>
-                    <p class="text-sm text-gray-400 mb-6 leading-relaxed">
-                        출처 불분명 자금을 깨끗하고 안전한 화폐로 신속 변환합니다. 보안 통로를 통해 추적을 완벽히 차단하며 즉시 현금화 및 자금 이동을 보장합니다.
-                    </p>
-                    <ul class="space-y-2.5 text-xs font-mono text-gray-300 border-t border-white/10 pt-4 mb-8">
-                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-gold mr-2"></i> 자금 추적 완전 차단 솔루션</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-gold mr-2"></i> 대량 권종 즉시 현금 정산</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-gold mr-2"></i> VIP 단골 우대 환전 수수료</li>
-                    </ul>
-                    <button onclick="openModal('trade')" class="w-full py-3 bg-syndicate-gold/10 border border-syndicate-gold/40 text-syndicate-gold font-orbitron font-bold text-xs uppercase hover:bg-syndicate-gold hover:text-black transition-all">
-                        환전 의뢰하기
-                    </button>
-                </div>
-
-                <!-- Business 2: 하트캔디 판매 -->
-                <div class="card-syndicate p-8 rounded-none relative border-t-2 border-t-syndicate-crimson group">
-                    <div class="absolute top-4 right-4 text-xs font-mono text-syndicate-crimson/40">BUSINESS #02</div>
-                    <div class="w-16 h-16 bg-syndicate-crimson/10 border border-syndicate-crimson/30 flex items-center justify-center text-syndicate-crimson text-3xl mb-6 group-hover:bg-syndicate-crimson group-hover:text-white transition-all">
-                        <i class="fa-solid fa-heart-circle-bolt"></i>
-                    </div>
-                    <h3 class="text-2xl font-serifKR font-bold text-white mb-3">하트캔디 독점 유통</h3>
-                    <p class="text-sm text-gray-400 mb-6 leading-relaxed">
-                        시장에서 가장 높은 수요를 자랑하는 프리미엄 '하트캔디'라인입니다. 엄격한 품질관리를 거쳐 최고의 효능과 거래 가치를 자랑합니다.
-                    </p>
-                    <ul class="space-y-2.5 text-xs font-mono text-gray-300 border-t border-white/10 pt-4 mb-8">
-                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-crimson mr-2"></i> 최상급 순도 및 품질 검증 완결</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-crimson mr-2"></i> 100개 / 500개 / 1,000개 단위 도매 가능</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-crimson mr-2"></i> 태산 전용 비밀 수송 라인 배송</li>
-                    </ul>
-                    <button onclick="openModal('trade')" class="w-full py-3 bg-syndicate-crimson/10 border border-syndicate-crimson/40 text-syndicate-crimson font-orbitron font-bold text-xs uppercase hover:bg-syndicate-crimson hover:text-white transition-all">
-                        하트캔디 구매 문의
-                    </button>
-                </div>
-
-                <!-- Business 3: 러쉬캔디 판매 -->
-                <div class="card-syndicate p-8 rounded-none relative border-t-2 border-t-syndicate-cyan group">
-                    <div class="absolute top-4 right-4 text-xs font-mono text-syndicate-cyan/40">BUSINESS #03</div>
-                    <div class="w-16 h-16 bg-syndicate-cyan/10 border border-syndicate-cyan/30 flex items-center justify-center text-syndicate-cyan text-3xl mb-6 group-hover:bg-syndicate-cyan group-hover:text-black transition-all">
-                        <i class="fa-solid fa-bolt-lightning"></i>
-                    </div>
-                    <h3 class="text-2xl font-serifKR font-bold text-white mb-3">러쉬캔디 고순도 공급</h3>
-                    <p class="text-sm text-gray-400 mb-6 leading-relaxed">
-                        즉각적인 반응과 극도의 도파민 자극을 자랑하는 하이엔드 '러쉬캔디' 라인업입니다. 소량으로도 압도적인 효과를 발휘하는 VIP 전용 품목입니다.
-                    </p>
-                    <ul class="space-y-2.5 text-xs font-mono text-gray-300 border-t border-white/10 pt-4 mb-8">
-                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-cyan mr-2"></i> 초고속 반응 극대화 제형</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-cyan mr-2"></i> 독점 정제 공정 특수 제형</li>
-                        <li class="flex items-center"><i class="fa-solid fa-check text-syndicate-cyan mr-2"></i> 예약 주문제 및 점조직 배송</li>
-                    </ul>
-                    <button onclick="openModal('trade')" class="w-full py-3 bg-syndicate-cyan/10 border border-syndicate-cyan/40 text-syndicate-cyan font-orbitron font-bold text-xs uppercase hover:bg-syndicate-cyan hover:text-black transition-all">
-                        러쉬캔디 주문하기
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="exchange" class="py-24 bg-black/60 relative border-t border-white/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-xs font-mono font-extrabold tracking-widest text-syndicate-gold uppercase">RATES & PRICES</span>
-                <h2 class="text-3xl sm:text-4xl font-serifKR font-bold text-white mt-1">태산 공식 환전율 & 단가표</h2>
-                <p class="text-xs font-mono text-syndicate-gold/70 mt-2">* 시장 변동성에 따라 실시간 단가가 조정될 수 있습니다.</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <!-- 환전 수수료표 -->
-                <div class="glass-syndicate p-8 border border-syndicate-gold/30">
-                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                        <h3 class="text-xl font-serifKR font-bold text-syndicate-gold flex items-center">
-                            <i class="fa-solid fa-vault mr-3"></i> 검은돈 세탁/환전 비율
-                        </h3>
-                        <span class="text-xs font-mono bg-syndicate-gold/20 text-syndicate-gold px-2.5 py-1">SECURE CLEARING</span>
-                    </div>
-                    <div class="space-y-4 font-mono text-sm">
-                        <div class="flex justify-between items-center p-3 bg-black/40 border border-white/5">
-                            <span class="text-gray-300">소액 거래 (1,000만 이하)</span>
-                            <span class="text-syndicate-gold font-bold">수수료 10% (수령 90%)</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 bg-black/40 border border-syndicate-gold/30">
-                            <span class="text-gray-200">중형 거래 (5,000만 이하)</span>
-                            <span class="text-syndicate-gold font-bold">수수료 7.5% (수령 92.5%)</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 bg-syndicate-gold/10 border border-syndicate-gold/60">
-                            <span class="text-white font-bold">대형/VIP 거래 (1억 이상)</span>
-                            <span class="text-syndicate-goldBright font-extrabold">수수료 5% (수령 95%)</span>
-                        </div>
-                    </div>
-                    <div class="mt-6 text-xs text-gray-400 font-mono leading-relaxed">
-                        <i class="fa-solid fa-circle-exclamation text-syndicate-gold mr-1"></i> 현장 현금 교환 시 무장 인력 현장 동석으로 안전 보장.
-                    </div>
-                </div>
-
-                <!-- 캔디 시세표 -->
-                <div class="glass-syndicate p-8 border border-syndicate-crimson/30">
-                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
-                        <h3 class="text-xl font-serifKR font-bold text-syndicate-crimson flex items-center">
-                            <i class="fa-solid fa-pills mr-3"></i> 캔디 제품군 단가표
-                        </h3>
-                        <span class="text-xs font-mono bg-syndicate-crimson/20 text-syndicate-crimson px-2.5 py-1">WHOLESALE ONLY</span>
-                    </div>
-                    <div class="space-y-4 font-mono text-sm">
-                        <div class="flex justify-between items-center p-3 bg-black/40 border border-white/5">
-                            <div>
-                                <div class="text-white font-bold">하트캔디 (Heart Candy)</div>
-                                <div class="text-[10px] text-gray-500">기본 범용 라인</div>
-                            </div>
-                            <span class="text-syndicate-crimson font-bold">개당 ₩ 150,000</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 bg-black/40 border border-syndicate-cyan/30">
-                            <div>
-                                <div class="text-white font-bold">러쉬캔디 (Rush Candy)</div>
-                                <div class="text-[10px] text-gray-500">고순도 하이엔드 라인</div>
-                            </div>
-                            <span class="text-syndicate-cyan font-bold">개당 ₩ 300,000</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 bg-syndicate-crimson/10 border border-syndicate-crimson/60">
-                            <div>
-                                <div class="text-white font-bold">태산 스페셜 벌크 (100개 세트)</div>
-                                <div class="text-[10px] text-syndicate-gold">하트 50 + 러쉬 50 세트 할인</div>
-                            </div>
-                            <span class="text-syndicate-goldBright font-extrabold">₩ 20,000,000</span>
-                        </div>
-                    </div>
-                    <div class="mt-6 text-xs text-gray-400 font-mono leading-relaxed">
-                        <i class="fa-solid fa-shield text-syndicate-crimson mr-1"></i> 모든 캔디류는 미개봉 인증 파우치로 전달됩니다.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="crew" class="py-28 relative">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-16">
-                <span class="text-xs font-mono font-extrabold tracking-widest text-syndicate-gold uppercase">SYNDICATE HIERARCHY</span>
-                <h2 class="text-3xl sm:text-5xl font-serifKR font-bold text-white mt-2">태산 조직 조직도</h2>
-            </div>
-
-            <!-- Supreme Leader Card -->
-            <div class="max-w-md mx-auto mb-10">
-                <div class="card-syndicate p-6 text-center border-2 border-syndicate-gold gold-border-glow relative">
-                    <span class="absolute top-3 right-4 text-[10px] font-mono bg-syndicate-gold text-black font-extrabold px-2 py-0.5">SUPREME BOSS</span>
-                    <div class="w-20 h-20 bg-black border-2 border-syndicate-gold rounded-full mx-auto mb-4 flex items-center justify-center text-syndicate-gold text-3xl font-serifKR font-black">
-                        太
-                    </div>
-                    <h3 class="text-2xl font-serifKR font-bold text-white">태산 총수</h3>
-                    <p class="text-xs font-mono text-syndicate-gold mt-1">김억지 (#15)</p>
-                </div>
-            </div>
-
-            <!-- Officers Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-10">
-                <div class="card-syndicate p-6 text-center border-t-2 border-t-syndicate-crimson">
-                    <div class="text-[10px] font-mono text-syndicate-crimson mb-1">GOMUN (고문)</div>
-                    <h4 class="text-xl font-bold text-white">호 놀</h4>
-                </div>
-                <div class="card-syndicate p-6 text-center border-t-2 border-t-syndicate-crimson">
-                    <div class="text-[10px] font-mono text-syndicate-crimson mb-1">SUPPLY MANAGER (유통이구)</div>
-                    <h4 class="text-xl font-bold text-white">서야율</h4>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer class="border-t border-white/10 py-10 bg-black text-xs font-mono text-syndicate-muted">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center space-x-3">
-                <div class="w-6 h-6 bg-syndicate-gold text-black font-bold flex items-center justify-center font-serifKR">太</div>
-                <span class="text-white font-bold font-cinzel tracking-widest">TAESAN SYNDICATE</span>
-                <span>© 2026 TAESAN FACTION. ALL RIGHTS RESERVED.</span>
-            </div>
-            <div class="text-syndicate-gold/60">
-                <span>DARKNET ENCRYPTED CONNECTION :: GOOGLE SHEETS ACTIVE</span>
-            </div>
-        </div>
-    </footer>
-
-    <div id="modalOverlay" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div id="modalBox" class="glass-syndicate w-full max-w-xl p-6 sm:p-8 border border-syndicate-gold/40 relative transform scale-95 transition-transform duration-300 max-h-[90vh] overflow-y-auto">
-            <div class="flex items-center justify-between border-b border-white/10 pb-4 mb-6">
-                <div class="flex items-center space-x-3">
-                    <div class="w-3 h-3 bg-syndicate-gold animate-pulse"></div>
-                    <h3 id="modalTitle" class="font-serifKR font-bold text-xl text-white">태산 접수창구</h3>
-                </div>
-                <button onclick="closeModal()" class="text-gray-400 hover:text-white p-2">
-                    <i class="fa-solid fa-xmark text-xl"></i>
-                </button>
-            </div>
-
-            <form id="publicForm" onsubmit="handlePublicSubmit(event)" class="space-y-4 font-mono text-xs">
-                <input type="hidden" id="publicFormType" value="recruit">
-
-                <div>
-                    <label class="block text-syndicate-gold uppercase mb-1">성명 / 암호 닉네임 *</label>
-                    <input type="text" id="pubName" required placeholder="예: 적룡 / User#9982" class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                </div>
-
-                <div>
-                    <label class="block text-syndicate-gold uppercase mb-1">연락처 / 디스코드 *</label>
-                    <input type="text" id="pubContact" required placeholder="@Telegram_ID 또는 Discord" class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                </div>
-
-                <div id="recruitFields">
-                    <label class="block text-syndicate-gold uppercase mb-1">희망 보직 *</label>
-                    <select id="pubRole" class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold mb-4">
-                        <option value="타격대">현장 타격 및 무장 호위대</option>
-                        <option value="자금팀">환전 및 세탁 자금 관리원</option>
-                        <option value="유통팀">하트&러쉬 캔디 비밀 배송원</option>
-                    </select>
-
-                    <label class="block text-syndicate-gold uppercase mb-1">각오 및 이력 *</label>
-                    <textarea id="pubMsgRecruit" rows="3" placeholder="충성의 각오를 적어주세요." class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold"></textarea>
-                </div>
-
-                <div id="tradeFields" class="hidden">
-                    <label class="block text-syndicate-gold uppercase mb-1">거래 항목 선택 *</label>
-                    <select id="pubTradeItem" class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold mb-4">
-                        <option value="검은돈 환전">검은돈 세탁 & 환전 의뢰</option>
-                        <option value="하트캔디">하트캔디 대량 구매</option>
-                        <option value="러쉬캔디">러쉬캔디 고순도 주문</option>
-                    </select>
-
-                    <label class="block text-syndicate-gold uppercase mb-1">거래 수량 및 상세 제안 *</label>
-                    <textarea id="pubMsgTrade" rows="3" placeholder="희망 수량 및 액수를 입력하세요." class="w-full bg-black/70 border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold"></textarea>
-                </div>
-
-                <div class="pt-4 flex justify-end space-x-3">
-                    <button type="button" onclick="closeModal()" class="px-5 py-3 border border-white/10 text-gray-400 hover:text-white">취소</button>
-                    <button type="submit" id="pubSubmitBtn" class="px-6 py-3 bg-syndicate-gold text-black font-extrabold uppercase hover:bg-syndicate-goldBright">전송하기</button>
-                </div>
-            </form>
-
-            <div id="pubSuccessMsg" class="hidden text-center py-8">
-                <div class="w-14 h-14 bg-syndicate-gold/20 text-syndicate-gold rounded-full flex items-center justify-center text-2xl mx-auto mb-4 border border-syndicate-gold">
-                    <i class="fa-solid fa-check"></i>
-                </div>
-                <h4 class="text-xl font-serifKR font-bold text-white mb-2">접수 및 저장 완료</h4>
-                <p class="text-xs text-gray-400 mb-6 font-mono">구글 시트 연동 데이터 전송이 완료되었습니다. 확인 후 담당 간부가 접촉합니다.</p>
-                <button onclick="closeModal()" class="px-6 py-2 bg-syndicate-gold text-black font-bold text-xs uppercase">닫기</button>
-            </div>
-        </div>
-    </div>
-
-    <div id="authModalOverlay" class="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
-        <div class="glass-syndicate w-full max-w-md p-6 sm:p-8 border border-syndicate-gold/50 relative">
-            <div class="text-center mb-6">
-                <div class="w-12 h-12 bg-syndicate-gold/10 border border-syndicate-gold text-syndicate-gold rounded-full flex items-center justify-center text-xl mx-auto mb-3">
-                    <i class="fa-solid fa-user-lock"></i>
-                </div>
-                <h3 class="text-2xl font-serifKR font-bold text-white">조직원 전용 인증</h3>
-                <p class="text-xs font-mono text-syndicate-gold/80 mt-1">태산 암호화 보고서 통합 포털</p>
-            </div>
-
-            <!-- Demo Hint Banner -->
-            <div class="bg-syndicate-gold/10 border border-syndicate-gold/30 p-3 rounded mb-6 text-center text-xs font-mono text-syndicate-gold">
-                <i class="fa-solid fa-info-circle mr-1"></i> 테스트 아이디: <b class="text-white">taesan</b> / PIN: <b class="text-white">7777</b>
-            </div>
-
-            <form onsubmit="handleAuthLogin(event)" class="space-y-4 font-mono text-xs">
-                <div>
-                    <label class="block text-gray-400 mb-1 uppercase">에이전트 ID</label>
-                    <input type="text" id="authAgentId" required placeholder="에이전트 ID 입력" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                </div>
-                <div>
-                    <label class="block text-gray-400 mb-1 uppercase">보안 PIN 번호</label>
-                    <input type="password" id="authPin" required placeholder="4자리 PIN" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                </div>
-                <div id="authError" class="hidden text-syndicate-crimson text-xs text-center font-bold">
-                    인증 실패: 아이디 또는 PIN 번호가 올바르지 않습니다.
-                </div>
-                <div class="pt-2 flex gap-3">
-                    <button type="button" onclick="closeAuthModal()" class="w-1/2 py-3 border border-white/20 text-gray-400">취소</button>
-                    <button type="submit" class="w-1/2 py-3 bg-syndicate-gold text-black font-extrabold uppercase hover:bg-syndicate-goldBright">인증 승인</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="memberPortalOverlay" class="fixed inset-0 bg-black/95 backdrop-blur-lg z-50 overflow-y-auto hidden">
-        <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-            
-            <!-- Dashboard Header -->
-            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-syndicate-gold/30 pb-6 mb-8 gap-4">
-                <div>
-                    <div class="flex items-center space-x-3">
-                        <span class="w-3 h-3 bg-green-500 rounded-full animate-ping"></span>
-                        <h2 class="text-2xl sm:text-3xl font-serifKR font-bold text-white">태산 보안 기밀 대시보드</h2>
-                    </div>
-                    <p class="text-xs font-mono text-syndicate-gold mt-1">인증원: <span id="portalAgentName" class="text-white">김억지 (#15)</span> | Google Sheets 자동 연동 활성화</p>
-                </div>
-                <button onclick="closeMemberPortal()" class="px-5 py-2.5 bg-syndicate-crimson/80 text-white font-mono text-xs uppercase hover:bg-syndicate-crimson flex items-center gap-2">
-                    <i class="fa-solid fa-right-from-bracket"></i> 로그아웃 및 세션 종료
-                </button>
-            </div>
-
-            <!-- Report Navigation Tabs -->
-            <div class="flex border-b border-white/10 mb-8 font-mono text-xs">
-                <button id="tabRpBtn" onclick="switchPortalTab('rp')" class="px-6 py-3 border-b-2 border-syndicate-gold text-syndicate-gold font-bold flex items-center gap-2">
-                    <i class="fa-solid fa-shield-cat"></i> RP 보고서 작성
-                </button>
-                <button id="tabTradeBtn" onclick="switchPortalTab('trade')" class="px-6 py-3 border-b-2 border-transparent text-gray-400 hover:text-white flex items-center gap-2">
-                    <i class="fa-solid fa-file-invoice-dollar"></i> 거래 보고서 작성
-                </button>
-                <button id="tabLogsBtn" onclick="switchPortalTab('logs')" class="px-6 py-3 border-b-2 border-transparent text-gray-400 hover:text-white flex items-center gap-2">
-                    <i class="fa-solid fa-list-check"></i> 제출 로그 기록
-                </button>
-            </div>
-
-            <!-- TAB 1: RP 보고서 작성란 -->
-            <div id="tabRpSection" class="glass-syndicate p-6 sm:p-8 border border-syndicate-gold/30 mb-8">
-                <h3 class="text-xl font-serifKR font-bold text-syndicate-gold mb-6 flex items-center">
-                    <i class="fa-solid fa-scroll mr-3"></i> [조직 전용] RP (Roleplay) 상황 보고서 작성
-                </h3>
-
-                <form onsubmit="handleRpSubmit(event)" class="space-y-6 font-mono text-xs">
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                        <div>
-                            <label class="block text-syndicate-gold uppercase mb-2">RP 종류 *</label>
-                            <select id="rpType" required class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                                <option value="[전체]">조직 점령전</option>
-                                <option value="[전체]태산 편의점">태산 편의점</option>
-                                <option value="[지상]젠트리 호텔">지상 전쟁</option>
-                                <option value="[지상]미로">미로 전쟁</option>
-                                <option value="[전체]차량 전쟁">차량 전쟁</option>
-                                <option value="[전체]청부 RP">미로 전쟁</option>
-                                <option value="기타">기타</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-syndicate-gold uppercase mb-2">상대 팩션*</label>
-                            <input type="text" id="rpTargetFaction" required placeholder="예: 경찰청 / LCN 파벌 / 무소속" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                        </div>
-
-                        <div>
-                            <label class="block text-syndicate-gold uppercase mb-2">RP 결과 *</label>
-                            <select id="rpResult" required class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                                <option value="승리">승리</option>
-                                <option value="무승부">무승부</option>
-                                <option value="패배">패배</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-syndicate-gold uppercase mb-2">상세 경과 및 보고 내용 *</label>
-                        <textarea id="rpDetails" rows="5" required placeholder="RP 진행 위치, 참여 조직원, 분쟁 내용, 최종 합의 사항 등을 상세히 기재하십시오." class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold"></textarea>
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button type="submit" class="px-8 py-3 bg-syndicate-gold text-black font-extrabold uppercase hover:bg-syndicate-goldBright flex items-center gap-2">
-                            <i class="fa-solid fa-paper-plane"></i> RP 보고서 구글 시트 전송
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- TAB 2: 거래 보고서 작성란 -->
-            <div id="tabTradeSection" class="glass-syndicate p-6 sm:p-8 border border-syndicate-gold/30 mb-8 hidden">
-                <h3 class="text-xl font-serifKR font-bold text-syndicate-gold mb-6 flex items-center">
-                    <i class="fa-solid fa-file-invoice-dollar mr-3"></i> [조직 전용] 캔디 거래 정산 보고서
-                </h3>
-
-                <form onsubmit="handleTradeSubmit(event)" class="space-y-6 font-mono text-xs">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <div>
-                            <label class="block text-syndicate-gold uppercase mb-2">상대 고유번호 (#) *</label>
-                            <input type="text" id="tradeTargetTag" required placeholder="예: #1234" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                        </div>
-
-                        <div>
-                            <label class="block text-syndicate-gold uppercase mb-2">상대 닉네임 *</label>
-                            <input type="text" id="tradeTargetName" required placeholder="예: 홍길동" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                        </div>
-
-                        <div>
-                            <label class="block text-syndicate-gold uppercase mb-2">거래 물품명 *</label>
-                            <select id="tradeItemName" required class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                                <option value="검은돈 환전">검은돈 환전</option>
-                                <option value="하트캔디">하트캔디 (Heart Candy)</option>
-                                <option value="러쉬캔디">러쉬캔디 (Rush Candy)</option>
-                            </select>
-                        </div>
-
-                        <div>
-                            <label class="block text-syndicate-gold uppercase mb-2">거래 수량 *</label>
-                            <input type="text" id="tradeQty" required placeholder="예: 100개 / 5,000만원" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                        </div>
-
-                        <div>
-                            <label class="block text-syndicate-gold uppercase mb-2">총 거래 금액 (₩) *</label>
-                            <input type="text" id="tradeAmount" required placeholder="예: ₩ 15,000,000" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                        </div>
-
-                        <div>
-                            <label class="block text-syndicate-gold uppercase mb-2">비고 / 장소 및 결제 방식</label>
-                            <input type="text" id="tradeNotes" placeholder="예: 항구 3번 창고 / 현금 즉시 지급" class="w-full bg-black/80 border border-white/20 px-4 py-3 text-white focus:outline-none focus:border-syndicate-gold">
-                        </div>
-                    </div>
-
-                    <div class="flex justify-end">
-                        <button type="submit" class="px-8 py-3 bg-syndicate-gold text-black font-extrabold uppercase hover:bg-syndicate-goldBright flex items-center gap-2">
-                            <i class="fa-solid fa-paper-plane"></i> 거래 보고서 구글 시트 전송
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- TAB 3: 최근 제출 로그 기록 -->
-            <div id="tabLogsSection" class="glass-syndicate p-6 sm:p-8 border border-syndicate-gold/30 mb-8 hidden">
-                <h3 class="text-xl font-serifKR font-bold text-white mb-4 flex items-center">
-                    <i class="fa-solid fa-database mr-3 text-syndicate-gold"></i> 실시간 보고서 전송 로그 기록
-                </h3>
-                <p class="text-xs font-mono text-gray-400 mb-6">구글 시트 연동 API를 통해 전송된 최근 제출 내역입니다.</p>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full font-mono text-xs text-left text-gray-300">
-                        <thead class="bg-black/80 text-syndicate-gold uppercase border-b border-syndicate-gold/30">
-                            <tr>
-                                <th class="p-3">시간</th>
-                                <th class="p-3">분류</th>
-                                <th class="p-3">상대/유형</th>
-                                <th class="p-3">결과/금액</th>
-                                <th class="p-3">상세 내용</th>
-                            </tr>
-                        </thead>
-                        <tbody id="logsTableBody" class="divide-y divide-white/10">
-                            <tr>
-                                <td class="p-3 text-gray-500">2026-09-21 01:20</td>
-                                <td class="p-3 text-syndicate-gold font-bold">RP 보고서</td>
-                                <td class="p-3">경찰청 (단속/긴급대응)</td>
-                                <td class="p-3 text-green-400">승리/성공</td>
-                                <td class="p-3 text-gray-400">항구 단속 현장 대응 완료 및 자금 회수</td>
-                            </tr>
-                            <tr>
-                                <td class="p-3 text-gray-500">2026-09-21 01:05</td>
-                                <td class="p-3 text-syndicate-cyan font-bold">거래 보고서</td>
-                                <td class="p-3">#8821 (홍길동)</td>
-                                <td class="p-3 text-syndicate-gold">₩ 15,000,000</td>
-                                <td class="p-3 text-gray-400">하트캔디 100개 현장 교환 완료</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <script>
-        // ==========================================
-        // GOOGLE SHEETS API CONFIGURATION
-        // ==========================================
-        // Replace this URL with your Google Apps Script Web App URL!
-        const GOOGLE_SHEET_API_URL = "https://script.google.com/macros/s/AKfycbwekkkcpGEQBaGjOKTQvtj4ocNsG8gf6p6zPIe8J3kvIE8SnUh4IpKKyCATvk8t6FS4/exec";
-
-        // Sound BGM State
-        let bgmAudio = new Audio("https://assets.mixkit.co/music/preview/mixkit-tech-house-vibes-130.mp3");
-        bgmAudio.loop = true;
-        let isPlaying = false;
-
-        function toggleAudio() {
-            const btnIcon = document.getElementById('bgmIcon');
-            if (isPlaying) {
-                bgmAudio.pause();
-                btnIcon.className = "fa-solid fa-volume-xmark";
-            } else {
-                bgmAudio.play().catch(e => console.log("BGM autoplay prevented"));
-                btnIcon.className = "fa-solid fa-volume-high text-syndicate-gold";
-            }
-            isPlaying = !isPlaying;
+function submitEditRecord(){
+    if(!currentEditRecord) return;
+    const name=document.getElementById('editAttName').value;
+    const date=document.getElementById('editAttDate').value;
+    const inTime=document.getElementById('editAttIn').value;
+    const outTime=document.getElementById('editAttOut').value;
+    const minutes=parseInt(document.getElementById('editAttMins').value)||0;
+    
+    attendanceRecords=attendanceRecords.map(a=>{
+        if((a.id && a.id===currentEditRecord.id) || (a.timestamp===currentEditRecord.timestamp)){
+            return {...a, name, date, inTime, outTime, minutes};
         }
+        return a;
+    });
+    localStorage.setItem('taesan_attendance',JSON.stringify(attendanceRecords));
+    closeEditModal();
+    renderAdminAttendance();
+    showAlert("SUCCESS","출퇴근 기록이 수정되었습니다.");
+}
 
-        // Mobile Menu Toggle
-        const mobileBtn = document.getElementById('mobileBtn');
-        const mobileMenu = document.getElementById('mobileMenu');
-        mobileBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
-        document.querySelectorAll('.m-link').forEach(link => {
-            link.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-        });
+function escapeHtml(v){return String(v??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;')}
+function formatDate(v){const d=new Date(v);return isNaN(d)?String(v||'-'):d.toLocaleString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}
 
-        // Public Modal Handler
-        const overlay = document.getElementById('modalOverlay');
-        const modalBox = document.getElementById('modalBox');
-        const modalTitle = document.getElementById('modalTitle');
-        const recruitFields = document.getElementById('recruitFields');
-        const tradeFields = document.getElementById('tradeFields');
-        const pubSubmitBtn = document.getElementById('pubSubmitBtn');
-        const publicFormType = document.getElementById('publicFormType');
-        const publicForm = document.getElementById('publicForm');
-        const pubSuccessMsg = document.getElementById('pubSuccessMsg');
+function renderAdminRecords(reports){
+    adminRecordsBody.innerHTML='';if(!isAdmin())return;if(!reports?.length){adminRecordsBody.innerHTML='<tr><td colspan="5" style="color:var(--white-muted)">기록이 없습니다.</td></tr>';return}
+    [...reports].reverse().forEach(r=>{
+        let content='';
+        let badgeClass='badge-rp';
+        if(r.reportType==='RP'){content=`${r.rpCategory||''} / ${r.targetFaction||''} / ${r.rpResult||''}`;badgeClass='badge-rp';}
+        else if(r.reportType==='TRADE'){content=`${r.tradeItem||''} ${r.quantity||0}개 / ${parseCleanNumber(r.totalPrice).toLocaleString('ko-KR')}원`;badgeClass='badge-candy';}
+        else if(r.reportType==='EXCHANGE'){content=`환전 ${parseCleanNumber(r.exchangeAmount).toLocaleString('ko-KR')}원`;badgeClass='badge-exchange';}
+        else if(r.reportType==='WITHDRAWAL'){content=`공동계좌 출금: ${parseCleanNumber(r.withdrawAmount).toLocaleString('ko-KR')}원 (${r.note||''})`;badgeClass='badge-withdraw';}
+        
+        adminRecordsBody.innerHTML+=`<tr><td style="font-size:.75rem">${formatDate(r.timestamp)}</td><td><span class="badge-count ${badgeClass}">${r.reportType}</span></td><td style="font-weight:700">${escapeHtml(r.authorName)}</td><td style="text-align:left">${escapeHtml(content)}</td><td><div class="admin-action-group"><button class="admin-action-btn admin-delete-btn" onclick='deleteRecord(${JSON.stringify(r).replace(/'/g,"&#39;")})'><i class="fa-solid fa-trash"></i> 삭제</button></div></td></tr>`;
+    });
+}
 
-        function openModal(mode) {
-            publicForm.reset();
-            publicForm.classList.remove('hidden');
-            pubSuccessMsg.classList.add('hidden');
-
-            if (mode === 'recruit') {
-                publicFormType.value = 'recruit';
-                modalTitle.innerText = '태산(TAESAN) 입사/입단 지원서';
-                recruitFields.classList.remove('hidden');
-                tradeFields.classList.add('hidden');
-                pubSubmitBtn.className = 'px-6 py-3 bg-syndicate-crimson text-white font-extrabold uppercase hover:bg-red-600';
-            } else {
-                publicFormType.value = 'trade';
-                modalTitle.innerText = '태산(TAESAN) 비밀 거래 접수';
-                recruitFields.classList.add('hidden');
-                tradeFields.classList.remove('hidden');
-                pubSubmitBtn.className = 'px-6 py-3 bg-syndicate-gold text-black font-extrabold uppercase hover:bg-syndicate-goldBright';
-            }
-
-            overlay.classList.remove('pointer-events-none', 'opacity-0');
-            overlay.classList.add('opacity-100');
-            modalBox.classList.remove('scale-95');
-            modalBox.classList.add('scale-100');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeModal() {
-            overlay.classList.add('opacity-0', 'pointer-events-none');
-            overlay.classList.remove('opacity-100');
-            modalBox.classList.add('scale-95');
-            modalBox.classList.remove('scale-100');
-            document.body.style.overflow = 'auto';
-        }
-
-        function handlePublicSubmit(e) {
-            e.preventDefault();
-            const mode = publicFormType.value;
-            const payload = {
-                type: mode === 'recruit' ? '입단 지원' : '비밀 거래 문의',
-                name: document.getElementById('pubName').value,
-                contact: document.getElementById('pubContact').value,
-                details: mode === 'recruit' 
-                    ? `[보직] ${document.getElementById('pubRole').value} | [내용] ${document.getElementById('pubMsgRecruit').value}`
-                    : `[품목] ${document.getElementById('pubTradeItem').value} | [제안] ${document.getElementById('pubMsgTrade').value}`
-            };
-
-            sendToGoogleSheets(payload);
-            publicForm.classList.add('hidden');
-            pubSuccessMsg.classList.remove('hidden');
-        }
-
-        // Member Auth Modal & Portal logic
-        const authModalOverlay = document.getElementById('authModalOverlay');
-        const authError = document.getElementById('authError');
-        const memberPortalOverlay = document.getElementById('memberPortalOverlay');
-
-        function openAuthModal() {
-            authError.classList.add('hidden');
-            authModalOverlay.classList.remove('pointer-events-none', 'opacity-0');
-            authModalOverlay.classList.add('opacity-100');
-        }
-
-        function closeAuthModal() {
-            authModalOverlay.classList.add('opacity-0', 'pointer-events-none');
-        }
-
-        function handleAuthLogin(e) {
-            e.preventDefault();
-            const agentId = document.getElementById('authAgentId').value.trim();
-            const pin = document.getElementById('authPin').value.trim();
-
-            if ((agentId === 'taesan' || agentId === '김억지') && pin === '7777') {
-                closeAuthModal();
-                memberPortalOverlay.classList.remove('hidden');
-                document.body.style.overflow = 'hidden';
-            } else {
-                authError.classList.remove('hidden');
-            }
-        }
-
-        function closeMemberPortal() {
-            memberPortalOverlay.classList.add('hidden');
-            document.body.style.overflow = 'auto';
-        }
-
-        // Tab Switcher inside Portal
-        function switchPortalTab(tab) {
-            const tabs = ['Rp', 'Trade', 'Logs'];
-            tabs.forEach(t => {
-                const btn = document.getElementById(`tab${t}Btn`);
-                const sec = document.getElementById(`tab${t}Section`);
-                if (t.toLowerCase() === tab) {
-                    btn.className = "px-6 py-3 border-b-2 border-syndicate-gold text-syndicate-gold font-bold flex items-center gap-2";
-                    sec.classList.remove('hidden');
-                } else {
-                    btn.className = "px-6 py-3 border-b-2 border-transparent text-gray-400 hover:text-white flex items-center gap-2";
-                    sec.classList.add('hidden');
-                }
-            });
-        }
-
-        // Handle RP Report Submission
-        function handleRpSubmit(e) {
-            e.preventDefault();
-            const payload = {
-                type: 'RP 보고서',
-                rpType: document.getElementById('rpType').value,
-                targetFaction: document.getElementById('rpTargetFaction').value,
-                result: document.getElementById('rpResult').value,
-                details: document.getElementById('rpDetails').value
-            };
-
-            sendToGoogleSheets(payload);
-            addLogToTable('RP 보고서', `${payload.targetFaction} (${payload.rpType})`, payload.result, payload.details);
-            alert("✅ RP 보고서가 성공적으로 전송되었습니다.");
-            e.target.reset();
-            switchPortalTab('logs');
-        }
-
-        // Handle Trade Report Submission
-        function handleTradeSubmit(e) {
-            e.preventDefault();
-            const payload = {
-                type: '거래 보고서',
-                targetTag: document.getElementById('tradeTargetTag').value,
-                targetName: document.getElementById('tradeTargetName').value,
-                itemName: document.getElementById('tradeItemName').value,
-                qty: document.getElementById('tradeQty').value,
-                amount: document.getElementById('tradeAmount').value,
-                notes: document.getElementById('tradeNotes').value
-            };
-
-            sendToGoogleSheets(payload);
-            addLogToTable('거래 보고서', `${payload.targetTag} (${payload.targetName})`, payload.amount, `${payload.itemName} ${payload.qty} | ${payload.notes}`);
-            alert("✅ 거래 보고서가 성공적으로 전송되었습니다.");
-            e.target.reset();
-            switchPortalTab('logs');
-        }
-
-        // Add dynamically submitted log to UI Table
-        function addLogToTable(category, target, result, details) {
-            const tbody = document.getElementById('logsTableBody');
-            const now = new Date().toLocaleString('ko-KR', { hour12: false }).slice(0, 16);
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td class="p-3 text-gray-500">${now}</td>
-                <td class="p-3 text-syndicate-gold font-bold">${category}</td>
-                <td class="p-3">${target}</td>
-                <td class="p-3 text-green-400">${result}</td>
-                <td class="p-3 text-gray-400">${details}</td>
-            `;
-            tbody.insertBefore(tr, tbody.firstChild);
-        }
-
-        // Google Sheets Fetch API Wrapper
-        function sendToGoogleSheets(data) {
-            if (GOOGLE_SHEET_API_URL === "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE") {
-                console.log("[DEMO MODE] Data ready to send to Google Sheets:", data);
-                return;
-            }
-
-            fetch(GOOGLE_SHEET_API_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            })
-            .then(() => console.log("Data successfully posted to Google Sheets"))
-            .catch(err => console.error("Google Sheets Sync Error:", err));
-        }
-    </script>
+function deleteRecord(record){
+    if(!isAdmin()){showAlert("ACCESS DENIED","두목 및 부두목만 삭제할 수 있습니다.");return;}
+    if(confirm(`정말 해당 [${record.reportType}] 기록을 삭제하시겠습니까?`)){
+        localReports=localReports.filter(r=>r.timestamp!==record.timestamp);
+        fetch(GOOGLE_SHEET_API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'DELETE',timestamp:record.timestamp})}).then(()=>{showAlert("DELETED","기록이 삭제되었습니다.");loadWeeklySummaryData();}).catch(()=>{showAlert("DONE","로컬 기록이 삭제되었습니다.");loadWeeklySummaryData();});
+    }
+}
+</script>
 </body>
 </html>
