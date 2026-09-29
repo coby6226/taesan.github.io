@@ -198,7 +198,7 @@ function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);partic
 
 const GOOGLE_SHEET_API_URL="https://script.google.com/macros/s/AKfycbwl6JwbXX93jBSZBaAHgTmJTAOqhdxxrsRP0IJHoXgJ2uSXQJDUwbMsryUJvns9rpc/exec";
 const MEMBER_LIST=["지니아스(139)","이대발(1923)","태석(222)","희승(2002)","성훈(1504)","호놀(7)","김억지(15)","왕조아 (1974)","애호박(733)","흑자(689)"];
-const ALLOWED_USERS={"지니아스":{pin:"1234",rank:"두목"},"태산":{pin:"5678",rank:"부두목"}};
+const ALLOWED_USERS={"지니아스":{pin:"0000",rank:"두목"};
 const CANDY_RULES={"하트캔디":{unitPrice:5000000,beaconFeePerUnit:250000},"러쉬캔디":{unitPrice:3000000,beaconFeePerUnit:150000}};
 let localReports=[],activeUser=null,selectedMembers=new Set(),currentEditRecord=null;
 let attendanceRecords=JSON.parse(localStorage.getItem('taesan_attendance')||'[]');
