@@ -241,7 +241,7 @@ function handleAuth(e){
         dashboardBox.style.display='flex';
         onTradeItemChange();
         updateAttendanceDisplay();
-    }else{showAlert("AUTH FAILED","ID 또는 PIN 번호가 올바르지 않습니다.\n(관리자 ID: 지니아스 / 태산)");}
+    }else{showAlert("AUTH FAILED","ID 또는 PIN 번호가 올바르지 않습니다.\n(관리자에게 문의해주시기 바랍니다.)");}
 }
 function handleLogout(){activeUser=null;selectedMembers.clear();authCode.value='';authPin.value='';cardWrapper.style.display='block';dashboardBox.style.display='none'}
 
