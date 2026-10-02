@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TAESAN SYSTEM</title>
+<title>TAESAN OPERATIONS SYSTEM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Pretendard:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -21,11 +21,7 @@ body{background:var(--bg-dark);color:#fff;font-family:'Pretendard',sans-serif;mi
 .app-container{width:100%;max-width:900px;display:flex;flex-direction:column;gap:20px;position:relative;z-index:10}
 .top-bar{background:var(--panel-bg);border:1px solid var(--border-light);border-radius:16px;padding:18px 24px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);box-shadow:0 10px 30px rgba(0,0,0,.5);flex-wrap:wrap;gap:15px}
 .brand-title{font-family:'Cinzel',serif;font-size:1.6rem;font-weight:900;letter-spacing:6px;color:#fff;text-shadow:0 0 15px rgba(255,255,255,.6)}
-.dashboard-layout{display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:start}
-.nav-tabs-vertical{display:flex;flex-direction:column;gap:12px}
-.tab-btn{background:var(--panel-bg);border:1px solid var(--border-light);color:var(--white-dim);padding:18px 20px;border-radius:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:12px;transition:.3s;font-size:.95rem;backdrop-filter:blur(15px);text-align:left}
-.tab-btn:hover{color:#fff;border-color:rgba(255,255,255,.4);transform:translateX(3px)}
-.tab-btn.active{background:rgba(255,255,255,.12);border-color:#fff;color:#fff;box-shadow:0 0 15px rgba(255,255,255,.15)}
+.dashboard-layout{display:grid;grid-template-columns:1fr;gap:20px;align-items:start}
 .workspace-card{background:var(--panel-bg);border:1px solid var(--border-light);border-radius:20px;padding:35px;backdrop-filter:blur(20px);box-shadow:0 20px 40px rgba(0,0,0,.6)}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .form-label{display:block;font-size:.85rem;color:var(--white-dim);margin-bottom:8px;font-weight:700}
@@ -49,7 +45,7 @@ body{background:var(--bg-dark);color:#fff;font-family:'Pretendard',sans-serif;mi
 .custom-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:flex;justify-content:center;align-items:center;z-index:1000;opacity:0;pointer-events:none;transition:.3s}
 .custom-modal.active{opacity:1;pointer-events:auto}
 .modal-box{background:#121620;border:1px solid var(--border-light);border-radius:16px;padding:30px;width:400px;max-width:90vw;text-align:center;box-shadow:0 0 30px rgba(0,0,0,.8)}
-@media(max-width:768px){.dashboard-layout{grid-template-columns:1fr}.nav-tabs-vertical{flex-direction:row;flex-wrap:wrap}.tab-btn{justify-content:center;flex:1;min-width:140px}.form-grid{grid-template-columns:1fr}.workspace-card{padding:22px}}
+@media(max-width:768px){.form-grid{grid-template-columns:1fr}.workspace-card{padding:22px}}
 </style>
 </head>
 <body>
@@ -62,14 +58,10 @@ body{background:var(--bg-dark);color:#fff;font-family:'Pretendard',sans-serif;mi
 </div>
 
 <div class="dashboard-layout">
-<div class="nav-tabs-vertical">
-<button class="tab-btn" id="tabExchange" onclick="switchTab('EXCHANGE')"><i class="fa-solid fa-sack-dollar"></i> 환전 계산</button>
-</div>
-
 <div class="workspace-card">
 
 <!-- 환전 보고서 폼 -->
-<div id="formExchange" style="display:none">
+<div id="formExchange">
 <h3 style="margin-bottom:20px"><i class="fa-solid fa-sack-dollar" style="margin-right:8px"></i> 환전 계산</h3>
 <div class="form-grid">
 <div><label class="form-label">고객 고유번호 (#)</label><input class="hud-input" id="exchangeTargetTag" placeholder="#139"></div>
@@ -97,7 +89,7 @@ body{background:var(--bg-dark);color:#fff;font-family:'Pretendard',sans-serif;mi
 <div class="calc-line"><span style="font-weight:700; color:#34d399;">고객 지급액:</span><span class="val-highlight" style="color:#34d399;" id="displayNetAmount">0 원</span></div>
 </div>
 
-<button type="button" class="white-btn" onclick="resetForms('EXCHANGE')" style="background:rgba(255,255,255,0.1); color:#fff; border:1px solid var(--border-light);">입력 내용 초기화</button>
+<button type="button" class="white-btn" onclick="resetForms()" style="background:rgba(255,255,255,0.1); color:#fff; border:1px solid var(--border-light);">입력 내용 초기화</button>
 </div>
 
 </div></div></div>
@@ -110,8 +102,6 @@ function resizeCanvas(){canvas.width=innerWidth;canvas.height=innerHeight}resize
 const particles=[];for(let i=0;i<50;i++)particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,radius:Math.random()*1.5+.5,dx:(Math.random()-.5)*.4,dy:(Math.random()-.5)*.4,alpha:Math.random()*.5+.2});
 function animateParticles(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.radius,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${p.alpha})`;ctx.fill();p.x+=p.dx;p.y+=p.dy;if(p.x<0||p.x>canvas.width)p.dx*=-1;if(p.y<0||p.y>canvas.height)p.dy*=-1});requestAnimationFrame(animateParticles)}animateParticles();
 
-const CANDY_RULES={"하트캔디":{unitPrice:5000000,beaconFeePerUnit:250000},"러쉬캔디":{unitPrice:3000000,beaconFeePerUnit:150000}};
-
 function parseCleanNumber(val){
     if(!val) return 0;
     return parseFloat(String(val).replace(/,/g,''))||0;
@@ -119,46 +109,6 @@ function parseCleanNumber(val){
 
 function showAlert(title,message){document.getElementById('modalTitle').innerText=title;document.getElementById('modalDesc').innerText=message;document.getElementById('customModal').classList.add('active')}
 function closeModal(){document.getElementById('customModal').classList.remove('active')}
-
-function switchTab(type){
-    tabTrade.classList.remove('active');
-    tabExchange.classList.remove('active');
-    formTrade.style.display='none';
-    formExchange.style.display='none';
-
-    if(type==='TRADE'){tabTrade.classList.add('active');formTrade.style.display='block';}
-    else if(type==='EXCHANGE'){tabExchange.classList.add('active');formExchange.style.display='block';}
-}
-
-function onTradeItemChange(){
-    const item=tradeItem.value;
-    if(CANDY_RULES[item]){
-        tradePrice.disabled=true;
-        let total=CANDY_RULES[item].unitPrice*(parseInt(tradeQty.value)||1);
-        tradePrice.value=total.toLocaleString('ko-KR');
-    }else{
-        tradePrice.disabled=false;
-        tradePrice.value='';
-    }
-    calculateTradeProfit();
-}
-
-function calculateTradeProfit(){
-    const item=tradeItem.value, qty=Math.max(1,parseInt(tradeQty.value)||1);
-    let total=0, fee=0;
-    if(CANDY_RULES[item]){
-        total=CANDY_RULES[item].unitPrice*qty;
-        fee=CANDY_RULES[item].beaconFeePerUnit*qty;
-        tradePrice.value=total.toLocaleString('ko-KR');
-    }else{
-        let rawVal = tradePrice.value.replace(/,/g,'');
-        total = parseCleanNumber(rawVal);
-        fee=0;
-    }
-    document.getElementById('displayCustomerPay').innerText = total.toLocaleString('ko-KR') + " 원";
-    document.getElementById('displayBeaconFee').innerText = "- " + fee.toLocaleString('ko-KR') + " 원";
-    document.getElementById('displayAccountDeposit').innerText = (total - fee).toLocaleString('ko-KR') + " 원";
-}
 
 /* 환전금액에 플러스(+) 버튼 기능 함수 */
 function addExchangeAmount(amount) {
@@ -200,24 +150,13 @@ function calculateExchangeFee(){
     document.getElementById('displayNetAmount').innerText = (a - f).toLocaleString('ko-KR') + " 원";
 }
 
-function resetForms(type){
-    if(type==='TRADE'){
-        tradeTargetTag.value='';
-        tradeTargetName.value='';
-        tradeItem.selectedIndex = 0;
-        tradeQty.value='1';
-        tradeNote.value='';
-        onTradeItemChange();
-    } else {
-        exchangeTargetTag.value='';
-        exchangeTargetName.value='';
-        exchangeAmount.value='';
-        exchangeNote.value='';
-        calculateExchangeFee();
-    }
+function resetForms(){
+    exchangeTargetTag.value='';
+    exchangeTargetName.value='';
+    exchangeAmount.value='';
+    calculateExchangeFee();
 }
 
-onTradeItemChange();
 calculateExchangeFee();
 </script>
 </body>
